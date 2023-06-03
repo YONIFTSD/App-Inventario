@@ -1,0 +1,37 @@
+// If you want to override variables do it here
+// @import "variables";
+
+.table-data{
+    min-height: 250px;
+}
+table tr th{
+    padding: 0.2rem !important;
+    font-size: 12px !important;
+    vertical-align: middle !important;
+}
+table tr td{
+    padding: 0.2rem !important;
+    font-size: 12px !important;
+    vertical-align: middle !important;
+}
+
+.select2-container .select2-selection--single{
+    min-height: calc(1.3em + 0.5rem + 2px);
+}
+
+
+
+$enable-ltr: true;
+$enable-rtl: true;
+
+// Import styles
+@import "~@coreui/coreui/scss/coreui";
+
+// Import Chart.js Tooltips
+@import "~@coreui/chartjs/scss/tooltips";
+
+@import "layout";
+@import "example";
+
+// If you want to add something do it here
+@import "custom";
