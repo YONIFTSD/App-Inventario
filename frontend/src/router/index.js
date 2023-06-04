@@ -456,6 +456,71 @@ const routes = [
     ],
   },
 
+
+
+  {
+    path: '/productos',
+    redirect: '/productos/listar',
+    component: DefaultLayout,
+    name: 'Product',
+    children: [
+      {
+        path: 'listar',
+        name: 'ProductList',
+        component: () => import('@/views/products/List'),
+      },
+      {
+        path: 'nuevo',
+        name: 'ProductAdd',
+        component: () => import('@/views/products/Add'),
+      },
+      {
+        path: 'editar/:id_product',
+        name: 'ProductEdit',
+        component: () => import('@/views/products/Edit'),
+        props: true,
+      },
+      {
+        path: 'ver/:id_product',
+        name: 'ProductView',
+        component: () => import('@/views/products/View'),
+        props: true,
+      },
+    ],
+  },
+
+
+  {
+    path: '/categorias',
+    redirect: '/categorias/listar',
+    component: DefaultLayout,
+    name: 'Category',
+    children: [
+      {
+        path: 'listar',
+        name: 'CategoryList',
+        component: () => import('@/views/categories/List'),
+      },
+      {
+        path: 'nuevo',
+        name: 'CategoryAdd',
+        component: () => import('@/views/categories/Add'),
+      },
+      {
+        path: 'editar/:id_category',
+        name: 'CategoryEdit',
+        component: () => import('@/views/categories/Edit'),
+        props: true,
+      },
+      {
+        path: 'ver/:id_category',
+        name: 'CategoryView',
+        component: () => import('@/views/categories/View'),
+        props: true,
+      },
+    ],
+  },
+
   {
     path: '/cuentas-por-cobrar',
     redirect: '/cuentas-por-cobrar/listar',

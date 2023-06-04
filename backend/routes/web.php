@@ -35,7 +35,7 @@ $router->group(['middleware' => 'role'], function () use ($router) {
         $router->get('/view/{id_user}', 'UserController@View');
     });
 
-    
+
     //tipo de usuario
     $router->group(['prefix' => 'user-type'], function () use ($router) {
         $router->get('/list/{search}', 'UserTypeController@ListAll');
@@ -153,7 +153,7 @@ $router->group(['middleware' => 'role'], function () use ($router) {
         $router->get('/view/{id_income}', 'ManagementIncomeController@View');
 
         $router->post('/get-balance-by-month', 'ManagementIncomeController@GetBalanceByMonth');
-        
+
     });
 
 
@@ -166,6 +166,16 @@ $router->group(['middleware' => 'role'], function () use ($router) {
         $router->get('/view/{id_client}', 'ClientController@View');
 
         $router->post('/search-select', 'ClientController@SearchSelect');
+    });
+
+
+     //proveedor
+     $router->group(['prefix' => 'providers'], function () use ($router) {
+        $router->get('/list/{search}', 'ProviderController@ListAll');
+        $router->post('/add', 'ProviderController@Store');
+        $router->put('/edit', 'ProviderController@Update');
+        $router->delete('/delete/{id_provider}', 'ProviderController@Delete');
+        $router->get('/view/{id_provider}', 'ProviderController@View');
     });
 
 
