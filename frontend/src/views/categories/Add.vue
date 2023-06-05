@@ -5,10 +5,10 @@
         <CCardHeader>
             <b-row>
                 <b-col md="10">
-                    <strong>Modulo Proveedor | Nuevo</strong>
+                    <strong>Modulo Categoria | Nuevo</strong>
                 </b-col>
                 <b-col md="2">
-                    <b-link :to="{ path: '/proveedores/listar' }" class="btn btn-sm form-control btn-primary" append title="Regresar" ><font-awesome-icon icon="fa-solid fa-circle-chevron-left" /> Regresar</b-link >
+                    <b-link :to="{ path: '/categorias/listar' }" class="btn btn-sm form-control btn-primary" append title="Regresar" ><font-awesome-icon icon="fa-solid fa-circle-chevron-left" /> Regresar</b-link >
                 </b-col>
             </b-row>
         </CCardHeader>
@@ -17,39 +17,15 @@
 
                 <b-row class="justify-content-center">
 
-                    <b-col md="2">
-                        <b-form-group label="Tipo Documento">
-                            <b-form-select size="sm" :options="document_type" v-model="provider.document_type"></b-form-select>
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="2">
-                        <b-form-group label="Nro Documento">
-                            <b-form-input size="sm" v-model="provider.document_number"></b-form-input>
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="8">
-                        <b-form-group label="Nombres" :description="errors.name">
-                            <b-form-input size="sm" v-model="provider.name"></b-form-input>
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="8">
-                        <b-form-group label="Email">
-                            <b-form-input type="email" size="sm" v-model="provider.email"></b-form-input>
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="2">
-                        <b-form-group label="Telefono">
-                            <b-form-input size="sm" v-model="provider.phone"></b-form-input>
+                    <b-col md="10">
+                        <b-form-group label="Nombre">
+                            <b-form-input size="sm" v-model="category.name"></b-form-input>
                         </b-form-group>
                     </b-col>
 
                     <b-col md="2">
                         <b-form-group label="Estado">
-                            <b-form-select size="sm" v-model="provider.state" :options="state"></b-form-select>
+                            <b-form-select size="sm" v-model="category.state" :options="state"></b-form-select>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -85,33 +61,22 @@ import { useStore } from 'vuex'
 export default {
     name: 'UserAdd',
     components: {
-        Keypress: () => import('vue-keypress'),
         LoadingComponent,
     },
     data() {
       return {
         isLoading:false,
-        module:'Provider',
+        module:'Category',
         role:'Add',
-        provider:{
-            id_provider:'',
-            document_type:'1',
-            document_number:'',
+        category:{
+            id_category:'',
             name:'',
-            email:'',
-            phone:'',
             state:'1',
         },
         state:[
             {value:1,text:'Activo'},
             {value:0,text:'Inactivo'},
         ],
-        document_type:[
-            {value:'1',text:'DNI'},
-            {value:'6',text:'RUC'},
-            {value:'0',text:'OTROS'},
-        ],
-
         errors:{
             name:'',
         },
@@ -124,7 +89,7 @@ export default {
     },
     methods: {
         Validate,
-        AddProvider,
+        AddCategory,
     },
     setup() {
         const store = useStore()
@@ -138,12 +103,12 @@ export default {
 }
 
 
-function AddProvider() {
+function AddCategory() {
 
     let me = this;
-    let url = this.url_base + "providers/add";
-    this.provider.id_user = this.muser.id_user;
-    let data = this.provider;
+    let url = this.url_base + "categories/add";
+    this.category.id_user = this.muser.id_user;
+    let data = this.category;
     me.isLoading = true;
     axios({
         method: "POST",
@@ -153,7 +118,7 @@ function AddProvider() {
     }).then(function (response) {
         if (response.data.status == 201) {
             Swal.fire({ icon: 'success', text: response.data.message, timer: 3000})
-            me.$router.push({name: "ProviderList" });
+            me.$router.push({name: "CategoryList" });
         }else{
             Swal.fire({ icon: 'error', text: response.data.message, timer: 3000})
         }
@@ -168,7 +133,7 @@ function AddProvider() {
 function Validate() {
     this.validate = false;
 
-    this.errors.name = this.provider.name.length == 0 ? 'Ingrese un nombre':'';
+    this.errors.name = this.category.name.length == 0 ? 'Ingrese un nombre':'';
 
     if (this.errors.name.length > 0) this.validate = true;
 
@@ -179,7 +144,7 @@ function Validate() {
     }
 
      Swal.fire({
-      title: "Esta seguro de registrar el proveedor?",
+      title: "Esta seguro de registrar una categoria?",
       text: "",
       icon: "warning",
       showCancelButton: true,
@@ -188,7 +153,7 @@ function Validate() {
       confirmButtonText: "Si, Estoy de acuerdo!",
     }).then((result) => {
       if (result.value) {
-        this.AddProvider();
+        this.AddCategory();
       }
     });
 }

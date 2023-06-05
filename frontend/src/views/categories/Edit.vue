@@ -5,10 +5,10 @@
         <CCardHeader>
             <b-row>
                 <b-col md="10">
-                    <strong>Modulo Proveedor | Editar</strong>
+                    <strong>Modulo Categoria | Editar</strong>
                 </b-col>
                 <b-col md="2">
-                    <b-link :to="{ path: '/proveedores/listar' }" class="btn btn-sm form-control btn-primary" append title="Regresar" ><font-awesome-icon icon="fa-solid fa-circle-chevron-left" /> Regresar</b-link >
+                    <b-link :to="{ path: '/categorias/listar' }" class="btn btn-sm form-control btn-primary" append title="Regresar" ><font-awesome-icon icon="fa-solid fa-circle-chevron-left" /> Regresar</b-link >
                 </b-col>
             </b-row>
         </CCardHeader>
@@ -16,40 +16,15 @@
             <b-form @submit="Validate">
 
                 <b-row class="justify-content-center">
-
-                    <b-col md="2">
-                        <b-form-group label="Tipo Documento">
-                            <b-form-select size="sm" :options="document_type" v-model="provider.document_type"></b-form-select>
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="2">
-                        <b-form-group label="Nro Documento">
-                            <b-form-input size="sm" v-model="provider.document_number"></b-form-input>
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="8">
-                        <b-form-group label="Nombres" :description="errors.name">
-                            <b-form-input size="sm" v-model="provider.name"></b-form-input>
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="8">
-                        <b-form-group label="Email">
-                            <b-form-input type="email" size="sm" v-model="provider.email"></b-form-input>
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="2">
-                        <b-form-group label="Telefono">
-                            <b-form-input size="sm" v-model="provider.phone"></b-form-input>
+                    <b-col md="10">
+                        <b-form-group label="Nombre">
+                            <b-form-input size="sm" v-model="category.name"></b-form-input>
                         </b-form-group>
                     </b-col>
 
                     <b-col md="2">
                         <b-form-group label="Estado">
-                            <b-form-select size="sm" v-model="provider.state" :options="state"></b-form-select>
+                            <b-form-select size="sm" v-model="category.state" :options="state"></b-form-select>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -84,7 +59,7 @@ import { useStore } from 'vuex'
 
 export default {
     name: 'UserAdd',
-    props: ['id_provider'],
+    props: ['id_category'],
     components: {
         Keypress: () => import('vue-keypress'),
         LoadingComponent,
@@ -92,27 +67,17 @@ export default {
     data() {
       return {
         isLoading:false,
-        module:'Provider',
+        module:'Category',
         role:'Edit',
-        provider:{
-            id_provider:'',
-            document_type:'1',
-            document_number:'',
+        category:{
+            id_category:'',
             name:'',
-            email:'',
-            phone:'',
             state:'1',
         },
         state:[
             {value:1,text:'Activo'},
             {value:0,text:'Inactivo'},
         ],
-        document_type:[
-            {value:'1',text:'DNI'},
-            {value:'6',text:'RUC'},
-            {value:'0',text:'OTROS'},
-        ],
-
         errors:{
             name:'',
         },
@@ -121,12 +86,12 @@ export default {
       }
     },
     mounted() {
-        this.ViewProvider();
+        this.ViewCategory();
     },
     methods: {
-        ViewProvider,
+        ViewCategory,
         Validate,
-        EditProvider,
+        EditCategory,
     },
     setup() {
         const store = useStore()
@@ -139,35 +104,31 @@ export default {
 
 }
 
-function ViewProvider() {
+function ViewCategory() {
     let me = this;
-    let id_provider = je.decrypt(me.id_provider);
-    let url = this.url_base + "providers/view/"+id_provider;
+    let id_category = je.decrypt(me.id_category);
+    let url = this.url_base + "categories/view/"+id_category;
     axios({
         method: "GET",
         url: url,
         headers: {token:this.muser.api_token, module:this.module, role:this.role},
     }).then(function (response) {
         if (response.data.status == 200) {
-            me.provider.id_provider = response.data.result.id_provider;
-            me.provider.document_type = response.data.result.document_type;
-            me.provider.document_number = response.data.result.document_number;
-            me.provider.name = response.data.result.name;
-            me.provider.email = response.data.result.email;
-            me.provider.phone = response.data.result.phone;
-            me.provider.state = response.data.result.state;
+            me.category.id_category = response.data.result.id_category;
+            me.category.name = response.data.result.name;
+            me.category.state = response.data.result.state;
         }
     }).catch((error) => {
         Swal.fire({ icon: 'error', text: 'A ocurrido un error', timer: 3000,})
     });
 }
 
-function EditProvider() {
+function EditCategory() {
 
     let me = this;
-    let url = this.url_base + "providers/edit";
-    this.provider.id_user = this.muser.id_user;
-    let data = this.provider;
+    let url = this.url_base + "categories/edit";
+    this.category.id_user = this.muser.id_user;
+    let data = this.category;
     me.isLoading = true;
     axios({
         method: "PUT",
@@ -182,7 +143,6 @@ function EditProvider() {
         }
         me.isLoading = false;
     }).catch((error) => {
-        console.log(error)
         Swal.fire({ icon: 'error', text: 'A ocurrido un error', timer: 3000,})
         me.isLoading = false;
     });
@@ -190,19 +150,15 @@ function EditProvider() {
 
 function Validate() {
     this.validate = false;
-
-    this.errors.name = this.provider.name.length == 0 ? 'Ingrese un nombre':'';
-
+    this.errors.name = this.category.name.length == 0 ? 'Ingrese un nombre':'';
     if (this.errors.name.length > 0) this.validate = true;
-
-
     if (this.validate) {
         Swal.fire({ icon: 'warning', text: 'Verifique que campos necesarios esten llenados', timer: 2000,});
         return false;
     }
 
      Swal.fire({
-      title: "Esta seguro de modificar el proveedor?",
+      title: "Esta seguro de modificar la categoria?",
       text: "",
       icon: "warning",
       showCancelButton: true,
@@ -211,7 +167,7 @@ function Validate() {
       confirmButtonText: "Si, Estoy de acuerdo!",
     }).then((result) => {
       if (result.value) {
-        this.EditProvider();
+        this.EditCategory();
       }
     });
 }

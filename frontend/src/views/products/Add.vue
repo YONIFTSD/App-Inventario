@@ -85,7 +85,6 @@ import { useStore } from 'vuex'
 export default {
     name: 'UserAdd',
     components: {
-        Keypress: () => import('vue-keypress'),
         LoadingComponent,
     },
     data() {

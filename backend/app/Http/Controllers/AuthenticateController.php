@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\ZonePrivilege;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AuthenticateController extends Controller
 {
@@ -23,7 +24,7 @@ class AuthenticateController extends Controller
 
     public function Login(Request $request)
     {
-        
+
         if ($request->isJson()) {
 
             $this->validate($request, [
@@ -34,11 +35,12 @@ class AuthenticateController extends Controller
             try{
 
                 $user = User::where('email', $request->email)->where('state',1)->first();
-            
+
                 if ($user && Hash::check($request->password, $user->password)) {
                     $userPermissions = array();
-
-                    $privileges_zone = PrivilegeZone::GetByUserType($user->id_user_type);                    
+                    $user->api_token =  Str::random(60);
+                    $user->update();
+                    $privileges_zone = PrivilegeZone::GetByUserType($user->id_user_type);
                     foreach ($privileges_zone as $privilege) {
                         $name_privilege = $privilege->module;
                         switch ($privilege->id_privilege) {
@@ -50,14 +52,37 @@ class AuthenticateController extends Controller
                         }
                         array_push($userPermissions,$name_privilege);
                     }
-                   
+
                     $business = Business::GetBusiness();
                     return response()->json(['status' => 200, 'message' => 'Bienvenido al sistema','result' => ['user' => $user, 'userPermissions' => $userPermissions, 'business' => $business]]);
                 }
                 return response()->json(['status' => 404, 'message' => 'datos incorrectos']);
 
-            } catch (\Exception $e){   
+            } catch (\Exception $e){
                 return $e;
+                return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
+            }
+        }
+        return response()->json(['status' => 400,'message' => 'El recurso de destino no admite el formato de datos solicitado']);
+    }
+
+    public function Logout(Request $request)
+    {
+
+        if ($request->isJson()) {
+
+            $this->validate($request, [
+                'id_user' => 'required',
+            ]);
+
+            try{
+
+                $user = User::find($request->id_user);
+                $user->api_token = NULL;
+                $user->update();
+                return response()->json(['status' => 200, 'message' => 'Se ha cerrado sessión correctamente.']);
+
+            } catch (\Exception $e){
                 return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
             }
         }

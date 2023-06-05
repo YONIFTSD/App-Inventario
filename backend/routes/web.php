@@ -17,11 +17,9 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-/**
- * Author: Yonathan William Mamani Calisaya
- * Fecha: 13-07-2022
- */
+
 $router->post('/login', 'AuthenticateController@Login');
+$router->post('/logout', 'AuthenticateController@Logout');
 
 //usuarios
 
@@ -48,115 +46,6 @@ $router->group(['middleware' => 'role'], function () use ($router) {
         $router->get('/get-zones-privileges', 'UserTypeController@GetZonePrivilege');
     });
 
-
-    //data manager
-    $router->group(['prefix' => 'data-manager'], function () use ($router) {
-        $router->get('/type-expenses', 'DataManagerController@ListTypeExpenses');
-        $router->get('/list-business', 'DataManagerController@ListBusiness');
-        $router->get('/get-correlative-by-module/{module}', 'DataManagerController@GetCorrelativeByModule');
-        $router->get('/get-exchange-rate/{date}', 'DataManagerController@GetExchangeRate');
-    });
-
-    //tipo de gasto
-    $router->group(['prefix' => 'type-expense'], function () use ($router) {
-        $router->get('/list/{search}', 'TypeExpenseController@ListAll');
-        $router->post('/add', 'TypeExpenseController@Store');
-        $router->put('/edit', 'TypeExpenseController@Update');
-        $router->delete('/delete/{id_type_expense}', 'TypeExpenseController@Delete');
-        $router->get('/view/{id_type_expense}', 'TypeExpenseController@View');
-    });
-
-
-    //tipo de ingreso
-    $router->group(['prefix' => 'type-income'], function () use ($router) {
-        $router->get('/list/{search}', 'TypeIncomeController@ListAll');
-        $router->post('/add', 'TypeIncomeController@Store');
-        $router->put('/edit', 'TypeIncomeController@Update');
-        $router->delete('/delete/{id_type_income}', 'TypeIncomeController@Delete');
-        $router->get('/view/{id_type_income}', 'TypeIncomeController@View');
-
-        $router->get('/list-active', 'TypeIncomeController@ListActive');
-    });
-
-    //egresos
-    $router->group(['prefix' => 'expenses'], function () use ($router) {
-        $router->get('/list/{from}/{to}/{search}', 'ExpenseController@ListAll');
-        $router->post('/add', 'ExpenseController@Store');
-        $router->put('/edit', 'ExpenseController@Update');
-        $router->delete('/delete/{id_expense}', 'ExpenseController@Delete');
-        $router->get('/view/{id_expense}', 'ExpenseController@View');
-    });
-
-    //ingresos
-    $router->group(['prefix' => 'incomes'], function () use ($router) {
-        $router->get('/list/{from}/{to}/{search}', 'IncomeController@ListAll');
-        $router->post('/add', 'IncomeController@Store');
-        $router->put('/edit', 'IncomeController@Update');
-        $router->delete('/delete/{id_income}', 'IncomeController@Delete');
-        $router->get('/view/{id_income}', 'IncomeController@View');
-
-        $router->post('/get-income-business', 'IncomeController@GetIncomeBusiness');
-    });
-
-
-    //egresos diaria
-    $router->group(['prefix' => 'daily-settlement-expenses'], function () use ($router) {
-        $router->get('/list/{from}/{to}/{search}', 'DailySettlementExpenseController@ListAll');
-        $router->post('/add', 'DailySettlementExpenseController@Store');
-        $router->put('/edit', 'DailySettlementExpenseController@Update');
-        $router->delete('/delete/{id_expense}', 'DailySettlementExpenseController@Delete');
-        $router->get('/view/{id_expense}', 'DailySettlementExpenseController@View');
-    });
-
-    //ingresos diarios
-    $router->group(['prefix' => 'daily-settlement-incomes'], function () use ($router) {
-        $router->get('/list/{from}/{to}/{search}', 'DailySettlementIncomeController@ListAll');
-        $router->post('/add', 'DailySettlementIncomeController@Store');
-        $router->put('/edit', 'DailySettlementIncomeController@Update');
-        $router->delete('/delete/{id_income}', 'DailySettlementIncomeController@Delete');
-        $router->get('/view/{id_income}', 'DailySettlementIncomeController@View');
-
-        $router->post('/get-income-business', 'DailySettlementIncomeController@GetIncomeBusiness');
-    });
-
-
-
-
-
-    //utilitdades
-    $router->group(['prefix' => 'utilities'], function () use ($router) {
-        $router->get('/list/{search}', 'UtilityController@ListAll');
-        $router->post('/add', 'UtilityController@Store');
-        $router->put('/edit', 'UtilityController@Update');
-        $router->delete('/delete/{id_utility}', 'UtilityController@Delete');
-        $router->get('/view/{id_utility}', 'UtilityController@View');
-
-        $router->post('/get-utilities', 'UtilityController@GetUtility');
-    });
-
-
-    //egreso gerencial
-    $router->group(['prefix' => 'management-expenses'], function () use ($router) {
-        $router->get('/list/{from}/{to}/{search}', 'ManagementExpenseController@ListAll');
-        $router->post('/add', 'ManagementExpenseController@Store');
-        $router->put('/edit', 'ManagementExpenseController@Update');
-        $router->delete('/delete/{id_expense}', 'ManagementExpenseController@Delete');
-        $router->get('/view/{id_expense}', 'ManagementExpenseController@View');
-    });
-
-    //ingreso gerencial
-    $router->group(['prefix' => 'management-incomes'], function () use ($router) {
-        $router->get('/list/{from}/{to}/{search}', 'ManagementIncomeController@ListAll');
-        $router->post('/add', 'ManagementIncomeController@Store');
-        $router->put('/edit', 'ManagementIncomeController@Update');
-        $router->delete('/delete/{id_income}', 'ManagementIncomeController@Delete');
-        $router->get('/view/{id_income}', 'ManagementIncomeController@View');
-
-        $router->post('/get-balance-by-month', 'ManagementIncomeController@GetBalanceByMonth');
-
-    });
-
-
     //cliente
     $router->group(['prefix' => 'clients'], function () use ($router) {
         $router->get('/list/{search}', 'ClientController@ListAll');
@@ -176,6 +65,16 @@ $router->group(['middleware' => 'role'], function () use ($router) {
         $router->put('/edit', 'ProviderController@Update');
         $router->delete('/delete/{id_provider}', 'ProviderController@Delete');
         $router->get('/view/{id_provider}', 'ProviderController@View');
+    });
+
+    //categorias
+    $router->group(['prefix' => 'categories'], function () use ($router) {
+        $router->get('/list/{search}', 'CategoryController@ListAll');
+        $router->post('/add', 'CategoryController@Store');
+        $router->put('/edit', 'CategoryController@Update');
+        $router->delete('/delete/{id_category}', 'CategoryController@Delete');
+        $router->get('/view/{id_category}', 'CategoryController@View');
+        $router->get('/list-active', 'CategoryController@ListActives');
     });
 
 

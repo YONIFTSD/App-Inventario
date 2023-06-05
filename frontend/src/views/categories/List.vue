@@ -5,7 +5,7 @@
         <CCardHeader>
             <b-row>
                 <b-col md="12">
-                    <strong>Modulo Proveedores | Listar</strong>
+                    <strong>Modulo Categorias | Listar</strong>
                 </b-col>
             </b-row>
 
@@ -17,9 +17,9 @@
                 <b-col md="3">
                     <b-form-group label=".">
                         <b-input-group>
-                        <b-form-input @keyup="ListProviders" size="sm" type="search" v-model="search" class="form-control" ></b-form-input>
+                        <b-form-input @keyup="ListCategories" size="sm" type="search" v-model="search" class="form-control" ></b-form-input>
                         <b-input-group-append>
-                            <b-button size="sm" variant="primary" @click="ListProviders">
+                            <b-button size="sm" variant="primary" @click="ListCategories">
                             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
                             </b-button>
                         </b-input-group-append>
@@ -27,8 +27,8 @@
                     </b-form-group>
                 </b-col>
                 <b-col md="1">
-                    <b-form-group v-if="Permission('ProviderAdd')" label=".">
-                        <b-link class="btn btn-sm form-control btn-primary" :to="{ path: '/proveedores/nuevo' }" append title="Nuevo" ><font-awesome-icon icon="fa-solid fa-file-circle-plus" /></b-link >
+                    <b-form-group v-if="Permission('CategoryAdd')" label=".">
+                        <b-link class="btn btn-sm form-control btn-primary" :to="{ path: '/categorias/nuevo' }" append title="Nuevo" ><font-awesome-icon icon="fa-solid fa-file-circle-plus" /></b-link >
                     </b-form-group>
                 </b-col>
 
@@ -42,28 +42,24 @@
                         <thead class="table-dark">
                             <tr>
                             <th width="3%" class="text-center text-white" >#</th>
-                            <th width="12%" class="text-center text-white" >Nro Documento</th>
-                            <th width="63%" class="text-center text-white" >Nombre</th>
-                            <th width="10%" class="text-center text-white" >Telefono</th>
-                            <th width="7%" class="text-center text-white" >Estado</th>
-                            <th width="8%" class="text-center text-white" >Acciones</th>
+                            <th width="70%" class="text-center text-white" >Nombre</th>
+                            <th width="10%" class="text-center text-white" >Estado</th>
+                            <th width="10%" class="text-center text-white" >Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="(item, it) in data_table" :key="it">
                                 <th class="text-center">{{ it + 1}}</th>
-                                <td class="text-start">{{ NameDocumentType(item.document_type)+" - "+item.document_number}}</td>
                                 <td class="text-start">{{item.name}}</td>
-                                <td class="text-end">{{item.phone}}</td>
                                 <td class="text-center">
                                     <b-badge v-if="item.state == 1" variant="success">Activo</b-badge>
                                     <b-badge v-if="item.state == 0" variant="danger">Inactivo</b-badge>
                                 </td>
                                 <td class="text-center">
                                     <b-dropdown variant="dark" dark right size="sm" text="Acciones">
-                                        <b-dropdown-item v-if="Permission('ClientEdit')" @click="PageEdit(item.id_provider)"><font-awesome-icon title="Editar" icon="fa-solid fa-pen-to-square" /> Editar</b-dropdown-item>
-                                        <b-dropdown-item v-if="Permission('ClientView')" @click="PageView(item.id_provider)"><font-awesome-icon title="Ver" icon="fa-solid fa-eye" /> Ver</b-dropdown-item>
-                                        <b-dropdown-item v-if="Permission('ClientDelete')" @click="ConfirmDelete(item.id_provider)"><font-awesome-icon title="Eliminar" icon="fa-solid fa-trash-can" /> Eliminar</b-dropdown-item>
+                                        <b-dropdown-item v-if="Permission('CategoryEdit')" @click="PageEdit(item.id_category)"><font-awesome-icon title="Editar" icon="fa-solid fa-pen-to-square" /> Editar</b-dropdown-item>
+                                        <b-dropdown-item v-if="Permission('CategoryView')" @click="PageView(item.id_category)"><font-awesome-icon title="Ver" icon="fa-solid fa-eye" /> Ver</b-dropdown-item>
+                                        <b-dropdown-item v-if="Permission('CategoryDelete')" @click="ConfirmDelete(item.id_category)"><font-awesome-icon title="Eliminar" icon="fa-solid fa-trash-can" /> Eliminar</b-dropdown-item>
                                     </b-dropdown>
                                 </td>
                             </tr>
@@ -77,7 +73,7 @@
                     v-model="currentPage"
                     :total-rows="rows"
                     :per-page="perPage"
-                    @click="ListProviders"
+                    @click="ListCategories"
                     ></b-pagination>
                 </b-col>
             </b-row>
@@ -100,10 +96,10 @@ import CodeToName from "@/assets/js/CodeToName";
 import Permissions from "@/assets/js/Permissions";
 
 export default {
-    name: 'ProviderList',
+    name: 'CategoryList',
     data() {
       return {
-        module:'Provider',
+        module:'Category',
         role:'List',
         to:moment(new Date()).local().format("YYYY-MM-DD"),
         from:moment().subtract(30, 'days').local().format("YYYY-MM-DD"),
@@ -117,10 +113,10 @@ export default {
       }
     },
     mounted() {
-        this.ListProviders();
+        this.ListCategories();
     },
     methods: {
-        ListProviders,
+        ListCategories,
         PageEdit,
         PageView,
         ConfirmDelete,
@@ -143,10 +139,10 @@ function NameDocumentType(code) {
     return CodeToName.NameDocumentType(code);
 }
 
-function ListProviders() {
+function ListCategories() {
     let me = this;
     let search = this.search == "" ? "all" : this.search;
-    let url = this.url_base + "providers/list/" + search + "?page=" + this.currentPage;
+    let url = this.url_base + "categories/list/" + search + "?page=" + this.currentPage;
     axios({
         method: "GET",
         url: url,
@@ -164,23 +160,23 @@ function ListProviders() {
     });
 }
 
-function PageEdit(id_provider) {
+function PageEdit(id_category) {
     this.$router.push({
-        name: "ProviderEdit",
-        params: { id_provider: je.encrypt(id_provider) },
+        name: "CategoryEdit",
+        params: { id_category: je.encrypt(id_category) },
     });
 }
 
-function PageView(id_provider) {
+function PageView(id_category) {
     this.$router.push({
-        name: "ProviderView",
-        params: { id_provider: je.encrypt(id_provider) },
+        name: "CategoryView",
+        params: { id_category: je.encrypt(id_category) },
     });
 }
 
-function ConfirmDelete(id_provider) {
+function ConfirmDelete(id_category) {
     Swal.fire({
-        title: "Esta seguro de eliminar el proveedor?",
+        title: "Esta seguro de eliminar la categoria?",
         text: "No podrás revertir esto!",
         icon: "warning",
         showCancelButton: true,
@@ -189,21 +185,21 @@ function ConfirmDelete(id_provider) {
         confirmButtonText: "Si, Estoy de acuerdo!",
     }).then((result) => {
         if (result.value) {
-        this.Delete(id_provider);
+        this.Delete(id_category);
         }
     });
 }
 
-function Delete(id_provider) {
+function Delete(id_category) {
     let me = this;
-    let url = this.url_base + "providers/delete/" + id_provider;
+    let url = this.url_base + "categories/delete/" + id_category;
     axios({
         method: "delete",
         url: url,
         headers: {token: this.muser.api_token,module: this.module,role: 'Delete'},
     }).then(function (response) {
       if (response.data.status == 200) {
-        const index = me.data_table.map(item => item.id_provider).indexOf(response.data.result.id_provider);
+        const index = me.data_table.map(item => item.id_category).indexOf(response.data.result.id_category);
         me.data_table.splice(index, 1);
         Swal.fire({ icon: 'success', text: response.data.message, timer: 3000,})
       } else {

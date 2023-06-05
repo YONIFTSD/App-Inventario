@@ -18,7 +18,7 @@
               <form >
                   <h1>Login</h1>
                   <p class="text-medium-emphasis">Iniciar sesión en su cuenta</p>
-          
+
                   <div class="form-floating mb-3">
                     <input type="email" v-model="email" placeholder="name@example.com" class="form-control form-control-sm" id="floatingInput">
                     <label for="floatingInput">Email</label>
@@ -88,7 +88,7 @@ function Login() {
   })
     .then(function (response) {
       if (response.data.status == 200) {
-        
+
         let user = je.encrypt(JSON.stringify(response.data.result.user));
         let user_permissions = je.encrypt(JSON.stringify(response.data.result.userPermissions));
 
@@ -101,12 +101,12 @@ function Login() {
           timer: 3000,
         });
         me.$router.push({ name: "DailySettlementIncomeList" });
-        
+
       setTimeout(function(){
           me.$router.go(0)
       }, 2000);
 
-        
+
 
       } else {
         // console.log('No logeado');

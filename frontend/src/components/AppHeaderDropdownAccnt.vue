@@ -21,12 +21,21 @@
 <script>
 import avatar from '@/assets/images/avatars/img.jpg'
 const Swal = require("sweetalert2");
+const axios = require("axios").default;
+const je = require("json-encrypt");
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+
 export default {
   name: 'AppHeaderDropdownAccnt',
   setup() {
+    const store = useStore()
+    const user = window.localStorage.getItem("user");
     return {
       avatar: avatar,
       itemsCount: 42,
+      url_base: computed(() => store.state.url_base),
+      muser: JSON.parse(JSON.parse(je.decrypt(user))),
     }
   },
   methods : {
@@ -35,15 +44,42 @@ export default {
 }
 
 function Logout() {
-  Swal.fire({
-      icon: "success",
-      title: "Se ha cerrado la session",
-      showConfirmButton: false,
-      timer: 1500,
+
+  let me = this;
+  let url = this.url_base + "logout";
+  let data = {
+    id_user: this.muser.id_user,
+  };
+  this.isLoading = true;
+
+  axios({
+    method: "POST",
+    url: url,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: data,
+  })
+    .then(function (response) {
+      if (response.data.status == 200) {
+
+        Swal.fire({
+            icon: "success",
+            title: "Se ha cerrado la session",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        window.localStorage.clear()
+        me.$router.push({ name: "Login"})
+        setTimeout(function(){
+          me.$router.go(0)
+      }, 1000);
+      }
     });
-  window.localStorage.clear()
-  this.$router.push({ name: "Login"})
- 
+
+
+
+
   // setTimeout(this.$router.go(), 2000);
 }
 </script>
