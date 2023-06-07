@@ -11,6 +11,7 @@ menu.push({
     icon: 'cil-speedometer',
 })
 
+
 if(user_permissions.indexOf('ClientList') > -1 || user_permissions.indexOf('ProviderList') > -1 ){
   let item = [];
   if (user_permissions.indexOf('ClientList') > -1) {
@@ -49,12 +50,27 @@ if(user_permissions.indexOf('ProductList') > -1 || user_permissions.indexOf('Cat
       items: item,
     }
   )
+}
+
+if(user_permissions.indexOf('PurchaseList') > - 1 ){
+  let item = [];
+  if (user_permissions.indexOf('PurchaseList') > -1) {
+    item.push({component: 'CNavItem', name: 'Compra', to: '/compras/listar',});
+  }
+  menu.push(
+    {
+      component: 'CNavGroup',
+      name: 'Compra',
+      to: '/compras',
+      icon: 'cil-star',
+      items: item,
+    }
+  )
 
 }
 
-if(user_permissions.indexOf('UserList') > -1 || user_permissions.indexOf('UserTypeList') > -1
-|| user_permissions.indexOf('TypeExpenseList') > -1 || user_permissions.indexOf('ClientList') > -1
-|| user_permissions.indexOf('TypeIncomeManagementList') > -1 ){
+
+if(user_permissions.indexOf('UserList') > -1 || user_permissions.indexOf('UserTypeList') > -1 ){
   let item = [];
   if (user_permissions.indexOf('UserList') > -1) {
     item.push({component: 'CNavItem',name: 'Usuarios',to: '/usuario/listar',});
@@ -62,21 +78,12 @@ if(user_permissions.indexOf('UserList') > -1 || user_permissions.indexOf('UserTy
   if (user_permissions.indexOf('UserTypeList') > -1) {
     item.push({component: 'CNavItem',name: 'Tipos de Usuarios',to: '/tipos-de-usuario/listar', });
   }
-  if (user_permissions.indexOf('ClientList') > -1) {
-    item.push({component: 'CNavItem', name: 'Clientes', to: '/clientes/listar',});
-  }
-  if (user_permissions.indexOf('TypeExpenseList') > -1) {
-    item.push({component: 'CNavItem',name: 'Tipo de Gastos',to: '/tipo-gasto/listar', });
-  }
 
-  if (user_permissions.indexOf('TypeIncomeManagementList') > -1) {
-    item.push({component: 'CNavItem', name: 'Tipo de Ingresos',to: '/tipo-ingreso/listar',});
-  }
   menu.push(
     {
       component: 'CNavGroup',
       name: 'Mantenimiento',
-      to: '/utilidad',
+      to: '/usuario',
       icon: 'cil-star',
       items: item,
     }

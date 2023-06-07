@@ -77,6 +77,17 @@ $router->group(['middleware' => 'role'], function () use ($router) {
         $router->get('/list-active', 'CategoryController@ListActives');
     });
 
+    //productos
+    $router->group(['prefix' => 'products'], function () use ($router) {
+        $router->get('/list/{search}', 'ProductController@ListAll');
+        $router->post('/add', 'ProductController@Store');
+        $router->put('/edit', 'ProductController@Update');
+        $router->delete('/delete/{id_product}', 'ProductController@Delete');
+        $router->get('/view/{id_product}', 'ProductController@View');
+
+        $router->post('/search', 'ProductController@Search');
+    });
+
 
     //cuenta por cobrar
     $router->group(['prefix' => 'accounts-receivable'], function () use ($router) {

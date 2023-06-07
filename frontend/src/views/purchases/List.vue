@@ -5,30 +5,30 @@
         <CCardHeader>
             <b-row>
                 <b-col md="12">
-                    <strong>Modulo de Egresos Gerenciales | Listar</strong>
+                    <strong>Modulo de Compras | Listar</strong>
                 </b-col>
             </b-row>
-          
+
         </CCardHeader>
         <CCardBody>
             <b-row>
                 <b-col md="4"></b-col>
                 <b-col md="2">
                     <b-form-group label="Desde">
-                        <b-form-input @change="ListManagementExpense" type="date" class="text-center" :max="to" size="sm" v-model="from"></b-form-input>
-                    </b-form-group> 
+                        <b-form-input @change="ListPurchase" type="date" class="text-center" :max="to" size="sm" v-model="from"></b-form-input>
+                    </b-form-group>
                 </b-col>
                 <b-col md="2">
                     <b-form-group label="Hasta">
-                        <b-form-input @change="ListManagementExpense" type="date" class="text-center" :min="from" size="sm" v-model="to"></b-form-input>
-                    </b-form-group> 
+                        <b-form-input @change="ListPurchase" type="date" class="text-center" :min="from" size="sm" v-model="to"></b-form-input>
+                    </b-form-group>
                 </b-col>
                 <b-col md="3">
                     <b-form-group label=".">
                         <b-input-group>
-                        <b-form-input @keyup="ListManagementExpense" size="sm" type="search" v-model="search" class="form-control" ></b-form-input>
+                        <b-form-input @keyup="ListPurchase" size="sm" type="search" v-model="search" class="form-control" ></b-form-input>
                         <b-input-group-append>
-                            <b-button size="sm" variant="primary" @click="ListManagementExpense">
+                            <b-button size="sm" variant="primary" @click="ListPurchase">
                             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
                             </b-button>
                         </b-input-group-append>
@@ -36,8 +36,8 @@
                     </b-form-group>
                 </b-col>
                 <b-col md="1">
-                    <b-form-group v-if="Permission('ManagementExpenseAdd')" label=".">
-                        <b-link class="btn btn-sm form-control btn-primary" :to="{ path: '/egreso-gerencial/nuevo' }" append title="Nuevo" ><font-awesome-icon icon="fa-solid fa-file-circle-plus" /></b-link >
+                    <b-form-group v-if="Permission('PurchaseAdd')" label=".">
+                        <b-link class="btn btn-sm form-control btn-primary" :to="{ path: '/compras/nuevo' }" append title="Nuevo" ><font-awesome-icon icon="fa-solid fa-file-circle-plus" /></b-link >
                     </b-form-group>
                 </b-col>
 
@@ -54,9 +54,8 @@
                             <th width="8%" class="text-center text-white" >Mes</th>
                             <th width="7%" class="text-center text-white" >Código</th>
                             <th width="30%" class="text-center text-white" >Empresa</th>
-                            <th width="15%" class="text-center text-white" >M. Pago</th>
-                            <th width="5%" class="text-center text-white" >Moneda</th>
-                            <th width="7%" class="text-center text-white" >Total</th>
+                            <th width="5%" class="text-center text-white" >Total USD</th>
+                            <th width="7%" class="text-center text-white" >Total PEN</th>
                             <th width="7%" class="text-center text-white" >Usuario</th>
                             <th width="7%" class="text-center text-white" >Estado</th>
                             <th width="8%" class="text-center text-white" >Acciones</th>
@@ -67,10 +66,9 @@
                                 <th class="text-center">{{ it + 1}}</th>
                                 <td class="text-start">{{item.year + " - " +NameMonth(item.month)}}</td>
                                 <td class="text-start">{{item.code}}</td>
-                                <td class="text-start">{{item.description}}</td>
-                                <td class="text-start">{{ NameMethodPayment(item.payment_method) }}</td>
-                                <td class="text-start">{{item.coin}}</td>
-                                <td class="text-end">{{item.total}}</td>
+                                <td class="text-start">{{item.business_name}}</td>
+                                <td class="text-end">{{item.total_usd}}</td>
+                                <td class="text-end">{{item.total_pen}}</td>
                                 <td class="text-start">{{item.user}}</td>
                                 <td class="text-center">
                                     <b-badge v-if="item.state == 1" variant="success">Activo</b-badge>
@@ -78,25 +76,25 @@
                                 </td>
                                 <td class="text-center">
                                     <b-dropdown variant="dark" dark right size="sm" text="Acciones">
-                                        <b-dropdown-item v-if="Permission('ManagementExpenseEdit')" @click="PageEdit(item.id_expense)"><font-awesome-icon title="Editar" icon="fa-solid fa-pen-to-square" /> Editar</b-dropdown-item>
-                                        <b-dropdown-item v-if="Permission('ManagementExpenseView')" @click="PageView(item.id_expense)"><font-awesome-icon title="Ver" icon="fa-solid fa-eye" /> Ver</b-dropdown-item>
-                                        <b-dropdown-item v-if="Permission('ManagementExpenseDelete')" @click="ConfirmDelete(item.id_expense)"><font-awesome-icon title="Eliminar" icon="fa-solid fa-trash-can" /> Eliminar</b-dropdown-item>
+                                        <b-dropdown-item v-if="Permission('IncomeEdit')" @click="PageEdit(item.id_income)"><font-awesome-icon title="Editar" icon="fa-solid fa-pen-to-square" /> Editar</b-dropdown-item>
+                                        <b-dropdown-item v-if="Permission('IncomeView')" @click="PageView(item.id_income)"><font-awesome-icon title="Ver" icon="fa-solid fa-eye" /> Ver</b-dropdown-item>
+                                        <b-dropdown-item v-if="Permission('IncomeDelete')" @click="ConfirmDelete(item.id_income)"><font-awesome-icon title="Eliminar" icon="fa-solid fa-trash-can" /> Eliminar</b-dropdown-item>
                                     </b-dropdown>
                                 </td>
                             </tr>
                         </tbody>
                         </table>
                     </div>
-                </b-col>  
+                </b-col>
 
                 <b-col md="12">
                     <b-pagination first-text="Primero" prev-text="Anterior" next-text="Siguiente" last-text="Último" align="center"
                     v-model="currentPage"
                     :total-rows="rows"
                     :per-page="perPage"
-                    @click="ListManagementExpense"
+                    @click="ListPurchase"
                     ></b-pagination>
-                </b-col>     
+                </b-col>
             </b-row>
         </CCardBody>
       </CCard>
@@ -117,10 +115,10 @@ import CodeToName from "@/assets/js/CodeToName";
 import Permissions from "@/assets/js/Permissions";
 
 export default {
-    name: 'ManagementExpenseList',
+    name: 'ExpenseList',
     data() {
       return {
-        module:'ManagementExpense',
+        module:'Income',
         role:'List',
         to:moment(new Date()).local().format("YYYY-MM-DD"),
         from:moment().subtract(30, 'days').local().format("YYYY-MM-DD"),
@@ -130,19 +128,18 @@ export default {
         rows: 0,
         perPage: 15,
         currentPage: 1,
-        
+
       }
     },
     mounted() {
-        this.ListManagementExpense();
+        this.ListPurchase();
     },
     methods: {
-        ListManagementExpense,
+        ListPurchase,
         PageEdit,
         PageView,
         ConfirmDelete,
         Delete,
-        NameMethodPayment,
         NameMonth,
         Permission,
     },
@@ -154,21 +151,17 @@ export default {
             muser: JSON.parse(JSON.parse(je.decrypt(user))),
         }
     },
-    
+
 }
 
 function NameMonth(code) {
   return CodeToName.NameMonth(code);
 }
 
-function NameMethodPayment(code) {
-  return CodeToName.NameMethodPayment(code);
-}
-
-function ListManagementExpense() {
+function ListPurchase() {
     let me = this;
     let search = this.search == "" ? "all" : this.search;
-    let url = this.url_base + "management-expenses/list/" + this.from+"/"+this.to +"/" + search + "?page=" + this.currentPage;
+    let url = this.url_base + "incomes/list/" + this.from+"/"+this.to +"/" + search + "?page=" + this.currentPage;
     axios({
         method: "GET",
         url: url,
@@ -186,23 +179,23 @@ function ListManagementExpense() {
     });
 }
 
-function PageEdit(id_expense) {
+function PageEdit(id_income) {
     this.$router.push({
-        name: "ManagementExpenseEdit",
-        params: { id_expense: je.encrypt(id_expense) },
+        name: "IncomeEdit",
+        params: { id_income: je.encrypt(id_income) },
     });
 }
 
-function PageView(id_expense) {
+function PageView(id_income) {
     this.$router.push({
-        name: "ManagementExpenseView",
-        params: { id_expense: je.encrypt(id_expense) },
+        name: "IncomeView",
+        params: { id_income: je.encrypt(id_income) },
     });
 }
 
-function ConfirmDelete(id_expense) {
+function ConfirmDelete(id_income) {
     Swal.fire({
-        title: "Esta seguro de eliminar el egreso gerencial?",
+        title: "Esta seguro de eliminar el ingreso?",
         text: "No podrás revertir esto!",
         icon: "warning",
         showCancelButton: true,
@@ -211,21 +204,21 @@ function ConfirmDelete(id_expense) {
         confirmButtonText: "Si, Estoy de acuerdo!",
     }).then((result) => {
         if (result.value) {
-        this.Delete(id_expense);
+        this.Delete(id_income);
         }
     });
 }
 
-function Delete(id_expense) {
+function Delete(id_income) {
     let me = this;
-    let url = this.url_base + "management-expenses/delete/" + id_expense;
+    let url = this.url_base + "incomes/delete/" + id_income;
     axios({
         method: "delete",
         url: url,
         headers: {token: this.muser.api_token,module: this.module,role: 'Delete'},
     }).then(function (response) {
       if (response.data.status == 200) {
-        const index = me.data_table.map(item => item.id_expense).indexOf(response.data.result.id_expense);
+        const index = me.data_table.map(item => item.id_income).indexOf(response.data.result.id_income);
         me.data_table.splice(index, 1);
         Swal.fire({ icon: 'success', text: response.data.message, timer: 3000,})
       } else {

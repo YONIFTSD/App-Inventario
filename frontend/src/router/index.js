@@ -115,285 +115,6 @@ const routes = [
   },
 
   {
-    path: '/liquidacion-diaria-egresos',
-    redirect: '/liquidacion-diaria-egresos/listar',
-    component: DefaultLayout,
-    name: 'DailySettlementExpense',
-    children: [
-      {
-        path: 'listar',
-        name: 'DailySettlementExpenseList',
-        component: () => import('@/views/daily-settlement-expenses/List'),
-      },
-      {
-        path: 'nuevo',
-        name: 'DailySettlementExpenseAdd',
-        component: () => import('@/views/daily-settlement-expenses/Add'),
-      },
-      {
-        path: 'editar/:id_expense',
-        name: 'DailySettlementExpenseEdit',
-        component: () => import('@/views/daily-settlement-expenses/Edit'),
-        props: true,
-      },
-      {
-        path: 'ver/:id_expense',
-        name: 'DailySettlementExpenseView',
-        component: () => import('@/views/daily-settlement-expenses/View'),
-        props: true,
-      },
-    ],
-  },
-
-  {
-    path: '/liquidacion-diaria-ingresos',
-    redirect: '/liquidacion-diaria-ingresos/listar',
-    component: DefaultLayout,
-    name: 'DailySettlementIncome',
-    children: [
-      {
-        path: 'listar',
-        name: 'DailySettlementIncomeList',
-        component: () => import('@/views/daily-settlement-incomes/List'),
-      },
-      {
-        path: 'nuevo',
-        name: 'DailySettlementIncomeAdd',
-        component: () => import('@/views/daily-settlement-incomes/Add'),
-      },
-      {
-        path: 'editar/:id_income',
-        name: 'DailySettlementIncomeEdit',
-        component: () => import('@/views/daily-settlement-incomes/Edit'),
-        props: true,
-      },
-      {
-        path: 'ver/:id_income',
-        name: 'DailySettlementIncomeView',
-        component: () => import('@/views/daily-settlement-incomes/View'),
-        props: true,
-      },
-    ],
-  },
-
-  {
-    path: '/tipo-gasto',
-    redirect: '/tipo-gasto/listar',
-    component: DefaultLayout,
-    name: 'TypeExpense',
-    children: [
-      {
-        path: 'listar',
-        name: 'TypeExpenseList',
-        component: () => import('@/views/type-expense/List'),
-      },
-      {
-        path: 'nuevo',
-        name: 'TypeExpenseAdd',
-        component: () => import('@/views/type-expense/Add'),
-      },
-      {
-        path: 'editar/:id_type_expense',
-        name: 'TypeExpenseEdit',
-        component: () => import('@/views/type-expense/Edit'),
-        props: true,
-      },
-      {
-        path: 'ver/:id_type_expense',
-        name: 'TypeExpenseView',
-        component: () => import('@/views/type-expense/View'),
-        props: true,
-      },
-    ],
-  },
-
-  {
-    path: '/tipo-ingreso',
-    redirect: '/tipo-ingreso/listar',
-    component: DefaultLayout,
-    name: 'TypeIncomeManagement',
-    children: [
-      {
-        path: 'listar',
-        name: 'TypeIncomeManagementList',
-        component: () => import('@/views/type-income-management/List'),
-      },
-      {
-        path: 'nuevo',
-        name: 'TypeIncomeManagementAdd',
-        component: () => import('@/views/type-income-management/Add'),
-      },
-      {
-        path: 'editar/:id_type_income',
-        name: 'TypeIncomeManagementEdit',
-        component: () => import('@/views/type-income-management/Edit'),
-        props: true,
-      },
-      {
-        path: 'ver/:id_type_income',
-        name: 'TypeIncomeManagementView',
-        component: () => import('@/views/type-income-management/View'),
-        props: true,
-      },
-    ],
-  },
-
-  {
-    path: '/egresos',
-    redirect: '/egresos/listar',
-    component: DefaultLayout,
-    name: 'Expense',
-    children: [
-      {
-        path: 'listar',
-        name: 'ExpenseList',
-        component: () => import('@/views/expenses/List'),
-      },
-      {
-        path: 'nuevo',
-        name: 'ExpenseAdd',
-        component: () => import('@/views/expenses/Add'),
-      },
-      {
-        path: 'editar/:id_expense',
-        name: 'ExpenseEdit',
-        component: () => import('@/views/expenses/Edit'),
-        props: true,
-      },
-      {
-        path: 'ver/:id_expense',
-        name: 'ExpenseView',
-        component: () => import('@/views/expenses/View'),
-        props: true,
-      },
-    ],
-  },
-
-  {
-    path: '/ingresos',
-    redirect: '/ingresos/listar',
-    component: DefaultLayout,
-    name: 'Income',
-    children: [
-      {
-        path: 'listar',
-        name: 'IncomeList',
-        component: () => import('@/views/incomes/List'),
-      },
-      {
-        path: 'nuevo',
-        name: 'IncomeAdd',
-        component: () => import('@/views/incomes/Add'),
-      },
-      {
-        path: 'editar/:id_income',
-        name: 'IncomeEdit',
-        component: () => import('@/views/incomes/Edit'),
-        props: true,
-      },
-      {
-        path: 'ver/:id_income',
-        name: 'IncomeView',
-        component: () => import('@/views/incomes/View'),
-        props: true,
-      },
-    ],
-  },
-
-  {
-    path: '/utilidad',
-    redirect: '/utilidad/listar',
-    component: DefaultLayout,
-    name: 'Utility',
-    children: [
-      {
-        path: 'listar',
-        name: 'UtilityList',
-        component: () => import('@/views/utilities/List'),
-      },
-      {
-        path: 'nuevo',
-        name: 'UtilityAdd',
-        component: () => import('@/views/utilities/Add'),
-      },
-      {
-        path: 'editar/:id_utility',
-        name: 'UtilityEdit',
-        component: () => import('@/views/utilities/Edit'),
-        props: true,
-      },
-      {
-        path: 'ver/:id_utility',
-        name: 'UtilityView',
-        component: () => import('@/views/utilities/View'),
-        props: true,
-      },
-    ],
-  },
-
-  {
-    path: '/egreso-gerencial',
-    redirect: '/egreso-gerencial/listar',
-    component: DefaultLayout,
-    name: 'ManagementExpense',
-    children: [
-      {
-        path: 'listar',
-        name: 'ManagementExpenseList',
-        component: () => import('@/views/management-expenses/List'),
-      },
-      {
-        path: 'nuevo',
-        name: 'ManagementExpenseAdd',
-        component: () => import('@/views/management-expenses/Add'),
-      },
-      {
-        path: 'editar/:id_expense',
-        name: 'ManagementExpenseEdit',
-        component: () => import('@/views/management-expenses/Edit'),
-        props: true,
-      },
-      {
-        path: 'ver/:id_expense',
-        name: 'ManagementExpenseView',
-        component: () => import('@/views/management-expenses/View'),
-        props: true,
-      },
-    ],
-  },
-
-  {
-    path: '/ingreso-gerencial',
-    redirect: '/ingreso-gerencial/listar',
-    component: DefaultLayout,
-    name: 'ManagementIncome',
-    children: [
-      {
-        path: 'listar',
-        name: 'ManagementIncomeList',
-        component: () => import('@/views/management-incomes/List'),
-      },
-      {
-        path: 'nuevo',
-        name: 'ManagementIncomeAdd',
-        component: () => import('@/views/management-incomes/Add'),
-      },
-      {
-        path: 'editar/:id_income',
-        name: 'ManagementIncomeEdit',
-        component: () => import('@/views/management-incomes/Edit'),
-        props: true,
-      },
-      {
-        path: 'ver/:id_income',
-        name: 'ManagementIncomeView',
-        component: () => import('@/views/management-incomes/View'),
-        props: true,
-      },
-    ],
-  },
-
-  {
     path: '/clientes',
     redirect: '/clientes/listar',
     component: DefaultLayout,
@@ -521,121 +242,38 @@ const routes = [
     ],
   },
 
+
   {
-    path: '/cuentas-por-cobrar',
-    redirect: '/cuentas-por-cobrar/listar',
+    path: '/compras',
+    redirect: '/compras/listar',
     component: DefaultLayout,
-    name: 'AccountReceivable',
+    name: 'Purchase',
     children: [
       {
         path: 'listar',
-        name: 'AccountReceivableList',
-        component: () => import('@/views/accounts-receivable/List'),
+        name: 'PurchaseList',
+        component: () => import('@/views/purchases/List'),
       },
       {
         path: 'nuevo',
-        name: 'AccountReceivableAdd',
-        component: () => import('@/views/accounts-receivable/Add'),
+        name: 'PurchaseAdd',
+        component: () => import('@/views/purchases/Add'),
       },
       {
-        path: 'editar/:id_account_receivable',
-        name: 'AccountReceivableEdit',
-        component: () => import('@/views/accounts-receivable/Edit'),
+        path: 'editar/:id_purchase',
+        name: 'PurchaseEdit',
+        component: () => import('@/views/purchases/Edit'),
         props: true,
       },
       {
-        path: 'ver/:id_account_receivable',
-        name: 'AccountReceivableView',
-        component: () => import('@/views/accounts-receivable/View'),
-        props: true,
-      },
-    ],
-  },
-
-
-  {
-    path: '/egreso-cobros',
-    redirect: '/egreso-cobros/listar',
-    component: DefaultLayout,
-    name: 'AccountReceivableExpense',
-    children: [
-      {
-        path: 'listar',
-        name: 'AccountReceivableExpenseList',
-        component: () => import('@/views/accounts-receivable-expense/List'),
-      },
-      {
-        path: 'nuevo',
-        name: 'AccountReceivableExpenseAdd',
-        component: () => import('@/views/accounts-receivable-expense/Add'),
-      },
-      {
-        path: 'editar/:id_expense',
-        name: 'AccountReceivableExpenseEdit',
-        component: () => import('@/views/accounts-receivable-expense/Edit'),
-        props: true,
-      },
-      {
-        path: 'ver/:id_expense',
-        name: 'AccountReceivableExpenseView',
-        component: () => import('@/views/accounts-receivable-expense/View'),
+        path: 'ver/:id_purchase',
+        name: 'PurchaseView',
+        component: () => import('@/views/purchases/View'),
         props: true,
       },
     ],
   },
 
-  {
-    path: '/reporte',
-    redirect: '/report/utilidad',
-    component: DefaultLayout,
-    name: 'Report',
-    children: [
-      {
-        path: 'utilidad-liquidacion-diaria',
-        name: 'ReportUtilityDailySettlement',
-        component: () => import('@/views/report/UtilityDailySettlement'),
-      },
-      {
-        path: 'utilidad-gerencial',
-        name: 'ReportUtilityManagement',
-        component: () => import('@/views/report/UtilityManagement'),
-      },
-      {
-        path: 'utilidad-gestion-cobros',
-        name: 'ReportUtilityAccountReceivable',
-        component: () => import('@/views/report/UtilityAccountReceivable'),
-      },
-      {
-        path: 'utilidad',
-        name: 'ReportUtility',
-        component: () => import('@/views/report/Utility'),
-      },
-
-      {
-        path: 'utilidad-mensual-liquidacion-diaria',
-        name: 'ReportMonthUtilityDailySettlement',
-        component: () => import('@/views/report/MonthUtilityDailySettlement'),
-      },
-
-      {
-        path: 'utilidad-mensual-gerencial',
-        name: 'ReportMonthUtilityManagement',
-        component: () => import('@/views/report/MonthUtilityManagement'),
-      },
-
-      {
-        path: 'utilidad-mensual-gestion-cobros',
-        name: 'ReportMonthUtilityAccountReceivable',
-        component: () => import('@/views/report/MonthUtilityAccountReceivable'),
-      },
-
-      {
-        path: 'utilidad-mensual',
-        name: 'ReportMonthUtility',
-        component: () => import('@/views/report/MonthUtility'),
-      },
-    ],
-  },
 
 
 

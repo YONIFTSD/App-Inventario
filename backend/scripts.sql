@@ -26,3 +26,7 @@ CREATE TABLE `products` (
 	CONSTRAINT `FK__categories` FOREIGN KEY (`id_category`) REFERENCES `categories` (`id_category`) ON UPDATE RESTRICT ON DELETE RESTRICT
 )
 COLLATE='utf8mb4_general_ci';
+
+
+ALTER TABLE `products`
+	CHANGE COLUMN `unit_measured` `unit_measure` VARCHAR(8) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci' AFTER `igv`;

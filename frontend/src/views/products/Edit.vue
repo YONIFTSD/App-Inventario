@@ -5,10 +5,10 @@
         <CCardHeader>
             <b-row>
                 <b-col md="10">
-                    <strong>Modulo Proveedor | Editar</strong>
+                    <strong>Modulo Producto | Editar</strong>
                 </b-col>
                 <b-col md="2">
-                    <b-link :to="{ path: '/proveedores/listar' }" class="btn btn-sm form-control btn-primary" append title="Regresar" ><font-awesome-icon icon="fa-solid fa-circle-chevron-left" /> Regresar</b-link >
+                    <b-link :to="{ path: '/productos/listar' }" class="btn btn-sm form-control btn-primary" append title="Regresar" ><font-awesome-icon icon="fa-solid fa-circle-chevron-left" /> Regresar</b-link >
                 </b-col>
             </b-row>
         </CCardHeader>
@@ -18,38 +18,56 @@
                 <b-row class="justify-content-center">
 
                     <b-col md="2">
-                        <b-form-group label="Tipo Documento">
-                            <b-form-select size="sm" :options="document_type" v-model="provider.document_type"></b-form-select>
+                        <b-form-group label="Categoria" :description="errors.id_category">
+                            <b-form-select size="sm" :options="categories" v-model="product.id_category"></b-form-select>
                         </b-form-group>
                     </b-col>
 
                     <b-col md="2">
-                        <b-form-group label="Nro Documento">
-                            <b-form-input size="sm" v-model="provider.document_number"></b-form-input>
+                        <b-form-group label="Codigo" :description="errors.code">
+                            <b-form-input size="sm" v-model="product.code"></b-form-input>
                         </b-form-group>
                     </b-col>
 
                     <b-col md="8">
-                        <b-form-group label="Nombres" :description="errors.name">
-                            <b-form-input size="sm" v-model="provider.name"></b-form-input>
-                        </b-form-group>
-                    </b-col>
-
-                    <b-col md="8">
-                        <b-form-group label="Email">
-                            <b-form-input type="email" size="sm" v-model="provider.email"></b-form-input>
+                        <b-form-group label="Nombre" :description="errors.name">
+                            <b-form-input size="sm" v-model="product.name"></b-form-input>
                         </b-form-group>
                     </b-col>
 
                     <b-col md="2">
-                        <b-form-group label="Telefono">
-                            <b-form-input size="sm" v-model="provider.phone"></b-form-input>
+                        <b-form-group label="Codigo Barras">
+                            <b-form-input size="sm" v-model="product.barcode"></b-form-input>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col md="2">
+                        <b-form-group label="IGV" :description="errors.igv">
+                            <b-form-select size="sm" :options="igv" v-model="product.igv"></b-form-select>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col md="2">
+                        <b-form-group label="Unidad de Medida" :description="errors.unit_measure">
+                            <b-form-select size="sm" :options="unit_measure" v-model="product.unit_measure"></b-form-select>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col md="2">
+                        <b-form-group label="Precio Compra" :description="errors.purchase_price">
+                            <b-form-input  type="number" step="any" class="text-end" size="sm" v-model="product.purchase_price"></b-form-input>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col md="2">
+                        <b-form-group label="Precio Venta" :description="errors.sale_price">
+                            <b-form-input type="number" step="any" class="text-end" size="sm" v-model="product.sale_price"></b-form-input>
                         </b-form-group>
                     </b-col>
 
                     <b-col md="2">
                         <b-form-group label="Estado">
-                            <b-form-select size="sm" v-model="provider.state" :options="state"></b-form-select>
+                            <b-form-select size="sm" v-model="product.state" :options="state"></b-form-select>
                         </b-form-group>
                     </b-col>
                 </b-row>
@@ -84,49 +102,67 @@ import { useStore } from 'vuex'
 
 export default {
     name: 'UserAdd',
-    props: ['id_provider'],
+    props : ['id_product'],
     components: {
-        Keypress: () => import('vue-keypress'),
         LoadingComponent,
     },
     data() {
       return {
         isLoading:false,
-        module:'Provider',
+        module:'Product',
         role:'Edit',
-        provider:{
-            id_provider:'',
-            document_type:'1',
-            document_number:'',
+        product:{
+            id_product:'',
+            id_category:'',
+            code:'',
             name:'',
-            email:'',
-            phone:'',
+            barcode:'',
+            igv:'',
+            unit_measure:'',
+            purchase_price:'',
+            sale_price:'',
             state:'1',
         },
         state:[
             {value:1,text:'Activo'},
             {value:0,text:'Inactivo'},
         ],
-        document_type:[
-            {value:'1',text:'DNI'},
-            {value:'6',text:'RUC'},
-            {value:'0',text:'OTROS'},
+        categories:[],
+        igv:[
+          {value: '', text:'- Seleccione una opción -'},
+          {value: '10', text:'Gravado'},
+          {value: '20', text:'Exonerado'},
+          {value: '30', text:'Inafecto'},
         ],
-
+        unit_measure:[
+            {value: '', text:'- Seleccione una opción -'},
+            {value: '1', text:'Unidad'},
+            {value: '2', text:'Kilogramos'},
+            {value: '3', text:'Gramo'},
+            {value: '4', text:'Litro'},
+        ],
         errors:{
+            id_category:'',
+            code:'',
             name:'',
+            igv:'',
+            unit_measure:'',
+            purchase_price:'',
+            sale_price:'',
         },
         validate: false,
 
       }
     },
     mounted() {
-        this.ViewProvider();
+      this.ListCategories();
+      this.ViewProduct();
     },
     methods: {
-        ViewProvider,
+        ViewProduct,
         Validate,
-        EditProvider,
+        EditProduct,
+        ListCategories,
     },
     setup() {
         const store = useStore()
@@ -138,36 +174,67 @@ export default {
     },
 
 }
+function ListCategories() {
 
-function ViewProvider() {
     let me = this;
-    let id_provider = je.decrypt(me.id_provider);
-    let url = this.url_base + "providers/view/"+id_provider;
+    let url = this.url_base + "categories/list-active";
+    me.isLoading = true;
+    axios({
+        method: "GET",
+        url: url,
+        headers: {token:this.muser.api_token, module:this.module, role:this.role},
+    }).then(function (response) {
+        me.categories = [{value:'', text:'- Seleccione una opcion -'}];
+        if (response.data.status == 200) {
+            response.data.result.forEach(element => {
+              me.categories.push({value: element.id_category, text: element.name})
+            });
+        }
+        me.isLoading = false;
+    }).catch((error) => {
+        console.log(error)
+        Swal.fire({ icon: 'error', text: 'A ocurrido un error', timer: 3000,})
+        me.isLoading = false;
+    });
+}
+
+function ViewProduct() {
+
+    let me = this;
+    let id_product = je.decrypt(me.id_product);
+    let url = this.url_base + "products/view/"+id_product;
+    me.isLoading = true;
     axios({
         method: "GET",
         url: url,
         headers: {token:this.muser.api_token, module:this.module, role:this.role},
     }).then(function (response) {
         if (response.data.status == 200) {
-            me.provider.id_provider = response.data.result.id_provider;
-            me.provider.document_type = response.data.result.document_type;
-            me.provider.document_number = response.data.result.document_number;
-            me.provider.name = response.data.result.name;
-            me.provider.email = response.data.result.email;
-            me.provider.phone = response.data.result.phone;
-            me.provider.state = response.data.result.state;
+            me.product.id_product = response.data.result.id_product;
+            me.product.id_category = response.data.result.id_category;
+            me.product.code = response.data.result.code;
+            me.product.name = response.data.result.name;
+            me.product.barcode = response.data.result.barcode;
+            me.product.igv = response.data.result.igv;
+            me.product.unit_measure = response.data.result.unit_measure;
+            me.product.purchase_price = response.data.result.purchase_price;
+            me.product.sale_price = response.data.result.sale_price;
+            me.product.state = response.data.result.state;
         }
+        me.isLoading = false;
     }).catch((error) => {
+        console.log(error)
         Swal.fire({ icon: 'error', text: 'A ocurrido un error', timer: 3000,})
+        me.isLoading = false;
     });
 }
 
-function EditProvider() {
+function EditProduct() {
 
     let me = this;
-    let url = this.url_base + "providers/edit";
-    this.provider.id_user = this.muser.id_user;
-    let data = this.provider;
+    let url = this.url_base + "products/edit";
+    this.product.id_user = this.muser.id_user;
+    let data = this.product;
     me.isLoading = true;
     axios({
         method: "PUT",
@@ -191,9 +258,21 @@ function EditProvider() {
 function Validate() {
     this.validate = false;
 
-    this.errors.name = this.provider.name.length == 0 ? 'Ingrese un nombre':'';
+    this.errors.id_category = this.product.id_category.length == 0 ? 'Seleccione una categoria':'';
+    this.errors.code = this.product.code.length == 0 ? 'Ingrese un codigo':'';
+    this.errors.name = this.product.name.length == 0 ? 'Ingrese un nombre':'';
+    this.errors.igv = this.product.igv.length == 0 ? 'Ingrese un igv':'';
+    this.errors.unit_measure = this.product.unit_measure.length == 0 ? 'Seleccione una opción':'';
+    this.errors.purchase_price = this.product.purchase_price.length == 0 ? 'Ingrese un precio':'';
+    this.errors.sale_price = this.product.sale_price.length == 0 ? 'Ingrese un precio':'';
 
+    if (this.errors.id_category.length > 0) this.validate = true;
+    if (this.errors.code.length > 0) this.validate = true;
     if (this.errors.name.length > 0) this.validate = true;
+    if (this.errors.igv.length > 0) this.validate = true;
+    if (this.errors.unit_measure.length > 0) this.validate = true;
+    if (this.errors.purchase_price.length > 0) this.validate = true;
+    if (this.errors.sale_price.length > 0) this.validate = true;
 
 
     if (this.validate) {
@@ -202,7 +281,7 @@ function Validate() {
     }
 
      Swal.fire({
-      title: "Esta seguro de modificar el proveedor?",
+      title: "Esta seguro de modificar el producto?",
       text: "",
       icon: "warning",
       showCancelButton: true,
@@ -211,7 +290,7 @@ function Validate() {
       confirmButtonText: "Si, Estoy de acuerdo!",
     }).then((result) => {
       if (result.value) {
-        this.EditProvider();
+        this.EditProduct();
       }
     });
 }
