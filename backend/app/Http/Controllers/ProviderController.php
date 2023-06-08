@@ -38,6 +38,15 @@ class ProviderController extends Controller
         }
     }
 
+    public function ListActives(){
+        try{
+            $obj = Provider::where('state',1)->get(['id_provider','name', 'document_number']);
+            return response()->json(['status' => 200,'result' => $obj]);
+        } catch (\Exception $e){
+            return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
+        }
+    }
+
     public function SearchSelect(Request $request){
         try{
             $obj = Provider::SearchSelect($request->search);

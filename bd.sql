@@ -115,6 +115,37 @@ INSERT INTO `correlatives` (`id_correlative`, `module`, `number`, `num`, `state`
 	(12, 'DailySettlementIncome', '00001022', 1022, 1, '2022-07-26 05:23:40', '2023-05-04 14:18:36'),
 	(13, 'AccountReceivableExpense', '00001058', 1058, 1, '0000-00-00 00:00:00', '2023-05-29 16:41:41');
 
+-- Volcando estructura para tabla bd_app_inventario.kardex_movement
+CREATE TABLE IF NOT EXISTS `kardex_movement` (
+  `id_kardex` int(11) NOT NULL AUTO_INCREMENT,
+  `module` varchar(50) DEFAULT NULL,
+  `id_module` int(11) DEFAULT NULL,
+  `id_product` int(11) DEFAULT NULL,
+  `broadcast_date` date DEFAULT NULL,
+  `type_operation` varchar(10) DEFAULT NULL,
+  `type_invoice` varchar(10) DEFAULT NULL,
+  `serie` varchar(10) DEFAULT NULL,
+  `number` varchar(10) DEFAULT NULL,
+  `quantity` decimal(10,2) DEFAULT NULL,
+  `unit_price` decimal(10,2) DEFAULT NULL,
+  `total_price` decimal(10,2) DEFAULT NULL,
+  `movement_type` varchar(50) DEFAULT NULL,
+  `state` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id_kardex`),
+  KEY `id_product` (`id_product`),
+  KEY `id_module` (`id_module`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+-- Volcando datos para la tabla bd_app_inventario.kardex_movement: ~4 rows (aproximadamente)
+INSERT INTO `kardex_movement` (`id_kardex`, `module`, `id_module`, `id_product`, `broadcast_date`, `type_operation`, `type_invoice`, `serie`, `number`, `quantity`, `unit_price`, `total_price`, `movement_type`, `state`, `created_at`, `updated_at`) VALUES
+	(1, 'Purchase', 4, 3, '2023-06-07', '02', NULL, 'f003', '2342', 20.00, 20.00, 400.00, 'Input', 1, '2023-06-08 03:03:50', '2023-06-08 03:03:50'),
+	(2, 'Purchase', 6, 3, '2023-06-07', '02', '01', 'f003', '33', 20.00, 20.00, 400.00, 'Input', 1, '2023-06-08 03:05:03', '2023-06-08 03:05:03'),
+	(3, 'Purchase', 7, 3, '2023-06-07', '02', '01', 'f004', '565675', 20.00, 30.00, 600.00, 'Input', 1, '2023-06-08 03:17:27', '2023-06-08 03:17:27'),
+	(7, 'Purchase', 8, 3, '2023-06-07', '02', '01', 'f003', '33', 2.00, 20.00, 40.00, 'Input', 1, '2023-06-08 03:45:57', '2023-06-08 03:45:57'),
+	(11, 'Sale', 2, 3, '2023-06-07', '01', '03', 'B001', '00000002', 2.00, 20.00, 40.00, 'Output', 1, '2023-06-08 05:02:58', '2023-06-08 05:02:58');
+
 -- Volcando estructura para tabla bd_app_inventario.migrations
 CREATE TABLE IF NOT EXISTS `migrations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -451,7 +482,7 @@ CREATE TABLE IF NOT EXISTS `products` (
 -- Volcando datos para la tabla bd_app_inventario.products: ~2 rows (aproximadamente)
 INSERT INTO `products` (`id_product`, `id_category`, `code`, `name`, `barcode`, `igv`, `unit_measure`, `stock`, `purchase_price`, `sale_price`, `state`, `created_at`, `updated_at`) VALUES
 	(2, 1, 'qe', 'leche', '234234', '10', '1', 0.00, 20.00, 23.00, 1, '2023-06-07 02:18:01', '2023-06-07 02:24:22'),
-	(3, 1, '45345', 'arroz', 'sdfsdf', '10', '2', 0.00, 10.00, 12.00, 1, '2023-06-07 02:24:46', '2023-06-07 02:26:09');
+	(3, 1, '45345', 'arroz', 'sdfsdf', '10', '2', 60.00, 10.00, 12.00, 1, '2023-06-07 02:24:46', '2023-06-08 05:02:58');
 
 -- Volcando estructura para tabla bd_app_inventario.providers
 CREATE TABLE IF NOT EXISTS `providers` (
@@ -493,9 +524,18 @@ CREATE TABLE IF NOT EXISTS `purchases` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_purchase`),
   KEY `id_provider` (`id_provider`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_app_inventario.purchases: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla bd_app_inventario.purchases: ~8 rows (aproximadamente)
+INSERT INTO `purchases` (`id_purchase`, `id_provider`, `type_invoice`, `serie`, `number`, `broadcast_date`, `coin`, `type_operation`, `observation`, `taxed_operation`, `exonerated_operation`, `unaffected_operation`, `igv`, `total`, `state`, `created_at`, `updated_at`) VALUES
+	(1, 2, '03', 'f002', '33', '2023-06-07', 'PEN', '02', 'asdas', 338.98, 0.00, 0.00, 61.02, 400.00, 1, '2023-06-08 02:51:58', '2023-06-08 02:51:58'),
+	(2, 2, '01', 'f003', '2342', '2023-06-07', 'PEN', '02', '', 338.98, 0.00, 0.00, 61.02, 400.00, 1, '2023-06-08 03:02:53', '2023-06-08 03:02:53'),
+	(3, 2, '01', 'f003', '2342', '2023-06-07', 'PEN', '02', '', 338.98, 0.00, 0.00, 61.02, 400.00, 1, '2023-06-08 03:03:37', '2023-06-08 03:03:37'),
+	(4, 2, '01', 'f003', '2342', '2023-06-07', 'PEN', '02', '', 338.98, 0.00, 0.00, 61.02, 400.00, 1, '2023-06-08 03:03:50', '2023-06-08 03:03:50'),
+	(5, 2, '01', 'f003', '33', '2023-06-07', 'PEN', '02', '', 338.98, 0.00, 0.00, 61.02, 400.00, 1, '2023-06-08 03:04:45', '2023-06-08 03:04:45'),
+	(6, 2, '01', 'f003', '33', '2023-06-07', 'PEN', '02', '', 338.98, 0.00, 0.00, 61.02, 400.00, 1, '2023-06-08 03:05:03', '2023-06-08 03:05:03'),
+	(7, 2, '01', 'f004', '565675', '2023-06-07', 'PEN', '02', '', 508.47, 0.00, 0.00, 91.53, 600.00, 9, '2023-06-08 03:17:27', '2023-06-08 03:25:17'),
+	(8, 2, '01', 'f003', '33', '2023-06-07', 'PEN', '02', '', 33.90, 0.00, 0.00, 6.10, 40.00, 1, '2023-06-08 03:41:01', '2023-06-08 03:45:57');
 
 -- Volcando estructura para tabla bd_app_inventario.purchases_detail
 CREATE TABLE IF NOT EXISTS `purchases_detail` (
@@ -503,8 +543,8 @@ CREATE TABLE IF NOT EXISTS `purchases_detail` (
   `id_purchase` int(11) DEFAULT NULL,
   `id_product` int(11) DEFAULT NULL,
   `quantity` decimal(10,2) DEFAULT NULL,
-  `price_unit` decimal(10,2) DEFAULT NULL,
-  `price_total` decimal(10,2) DEFAULT NULL,
+  `unit_price` decimal(10,2) DEFAULT NULL,
+  `total_price` decimal(10,2) DEFAULT NULL,
   `state` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -513,9 +553,86 @@ CREATE TABLE IF NOT EXISTS `purchases_detail` (
   KEY `id_product` (`id_product`),
   CONSTRAINT `FK__purchases` FOREIGN KEY (`id_purchase`) REFERENCES `purchases` (`id_purchase`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_purchases_detail_products` FOREIGN KEY (`id_product`) REFERENCES `products` (`id_product`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_app_inventario.purchases_detail: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla bd_app_inventario.purchases_detail: ~5 rows (aproximadamente)
+INSERT INTO `purchases_detail` (`id_purchase_detail`, `id_purchase`, `id_product`, `quantity`, `unit_price`, `total_price`, `state`, `created_at`, `updated_at`) VALUES
+	(1, 4, 3, 20.00, 20.00, 400.00, 1, '2023-06-08 03:03:50', '2023-06-08 03:03:50'),
+	(2, 5, 3, 20.00, 20.00, 400.00, 1, '2023-06-08 03:04:45', '2023-06-08 03:04:45'),
+	(3, 6, 3, 20.00, 20.00, 400.00, 1, '2023-06-08 03:05:03', '2023-06-08 03:05:03'),
+	(4, 7, 3, 20.00, 30.00, 600.00, 1, '2023-06-08 03:17:27', '2023-06-08 03:17:27'),
+	(8, 8, 3, 2.00, 20.00, 40.00, 1, '2023-06-08 03:45:57', '2023-06-08 03:45:57');
+
+-- Volcando estructura para tabla bd_app_inventario.sales
+CREATE TABLE IF NOT EXISTS `sales` (
+  `id_sale` int(11) NOT NULL AUTO_INCREMENT,
+  `id_client` int(11) DEFAULT NULL,
+  `id_user` int(11) DEFAULT NULL,
+  `id_serie` int(11) DEFAULT NULL,
+  `type_invoice` varchar(3) DEFAULT NULL,
+  `serie` varchar(5) DEFAULT NULL,
+  `number` varchar(10) DEFAULT NULL,
+  `broadcast_date` date DEFAULT NULL,
+  `coin` varchar(3) DEFAULT NULL,
+  `type_operation` varchar(3) DEFAULT NULL,
+  `observation` varchar(50) DEFAULT NULL,
+  `taxed_operation` decimal(10,2) DEFAULT NULL,
+  `exonerated_operation` decimal(10,2) DEFAULT NULL,
+  `unaffected_operation` decimal(10,2) DEFAULT NULL,
+  `igv` decimal(10,2) DEFAULT NULL,
+  `total` decimal(10,2) DEFAULT NULL,
+  `state` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id_sale`),
+  KEY `id_client` (`id_client`),
+  KEY `id_user` (`id_user`),
+  KEY `id_serie` (`id_serie`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- Volcando datos para la tabla bd_app_inventario.sales: ~1 rows (aproximadamente)
+INSERT INTO `sales` (`id_sale`, `id_client`, `id_user`, `id_serie`, `type_invoice`, `serie`, `number`, `broadcast_date`, `coin`, `type_operation`, `observation`, `taxed_operation`, `exonerated_operation`, `unaffected_operation`, `igv`, `total`, `state`, `created_at`, `updated_at`) VALUES
+	(1, 2, 8, 2, '03', 'B001', '00000001', '2023-06-07', 'PEN', '01', '', 338.98, 0.00, 0.00, 61.02, 400.00, 9, '2023-06-08 04:48:20', '2023-06-08 04:53:05'),
+	(2, 4, 8, 2, '03', 'B001', '00000002', '2023-06-07', 'PEN', '01', '', 33.90, 0.00, 0.00, 6.10, 40.00, 1, '2023-06-08 04:49:56', '2023-06-08 05:02:58');
+
+-- Volcando estructura para tabla bd_app_inventario.sales_detail
+CREATE TABLE IF NOT EXISTS `sales_detail` (
+  `id_sale_detail` int(11) NOT NULL AUTO_INCREMENT,
+  `id_sale` int(11) DEFAULT NULL,
+  `id_product` int(11) DEFAULT NULL,
+  `quantity` decimal(10,2) DEFAULT NULL,
+  `unit_price` decimal(10,2) DEFAULT NULL,
+  `total_price` decimal(10,2) DEFAULT NULL,
+  `state` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id_sale_detail`),
+  KEY `id_sale` (`id_sale`),
+  KEY `id_product` (`id_product`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+-- Volcando datos para la tabla bd_app_inventario.sales_detail: ~0 rows (aproximadamente)
+INSERT INTO `sales_detail` (`id_sale_detail`, `id_sale`, `id_product`, `quantity`, `unit_price`, `total_price`, `state`, `created_at`, `updated_at`) VALUES
+	(4, 2, 3, 2.00, 20.00, 40.00, 1, '2023-06-08 05:02:58', '2023-06-08 05:02:58');
+
+-- Volcando estructura para tabla bd_app_inventario.series
+CREATE TABLE IF NOT EXISTS `series` (
+  `id_serie` int(11) NOT NULL AUTO_INCREMENT,
+  `type_invoice` varchar(5) DEFAULT NULL,
+  `serie` varchar(10) DEFAULT NULL,
+  `number` varchar(10) DEFAULT NULL,
+  `num` int(11) DEFAULT NULL,
+  `state` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id_serie`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+-- Volcando datos para la tabla bd_app_inventario.series: ~3 rows (aproximadamente)
+INSERT INTO `series` (`id_serie`, `type_invoice`, `serie`, `number`, `num`, `state`, `created_at`, `updated_at`) VALUES
+	(1, 'NV', '0001', '00000001', 1, 1, '2023-06-08 04:14:21', '2023-06-08 04:14:22'),
+	(2, '03', 'B001', '00000003', 3, 1, '2023-06-08 04:14:21', '2023-06-08 04:49:56'),
+	(3, '01', 'F001', '00000001', 1, 1, '2023-06-08 04:14:21', '2023-06-08 04:14:22');
 
 -- Volcando estructura para tabla bd_app_inventario.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -547,7 +664,7 @@ INSERT INTO `users` (`id_user`, `id_user_type`, `establishment`, `name`, `last_n
 	(3, 1, '[1,3]', 'DPG', 'SAN MARTIN', 'VENTAS SM', 'ventas@dpgdutyfree.com', '$2y$10$6RlDMMFG.atv00YGdXYra.CNskqEvjpM8O0H0SfGcTU4swLF3.3im', '', 9, 'OHEwbdT1ncIuqNEffRWsdvnZDP9WwGwtDrqwkXOsDZEmuKMJNbBO6FYr1i85', NULL, '2021-08-19 04:38:30', '2022-09-03 22:04:45'),
 	(6, 1, '[1,3]', 'APTO', 'AEROPUERTO', 'VENTAS APTO', 'aeropuerto@dpgdutyfree.com', '$2y$10$ysl8/VXaW25mKcfYgbcGKOZJCjJ628X3POnzczCj6yjjRk6stRmTq', '', 9, 'SO1zebjI9iL41Hr22p7qmp2nztfmtNoVR1cTjRWIinm5U2F8thKzbNjccwNl', NULL, '2021-08-19 05:08:22', '2022-09-03 22:04:30'),
 	(7, 1, '[1,3]', 'Carla', 'Ochoa', 'CARLA', 'ventasweb@dpgdutyfree.com', '$2y$10$1NbK6ATa9mrVGYJq.NVjHuB7.lquZVqrM/IhGta473fAlxKmXYLJO', '', 9, 'F4pPD0X4lGPlB4evgTlDBT49NJYklz3UaB9GB2JQlEhSaFujS4xjmkXRAfyN', NULL, '2021-08-19 06:01:53', '2022-09-03 22:04:22'),
-	(8, 1, '[1,3]', 'YONATHAN', 'W.', 'Yonathan', 'yonathanwilliammc@gmail.com', '$2y$10$KiBQiYHBP5C9AB5qTkW/2O6.8PrxkvRoqWxuNjo3v9Ex2SGuJUPL2', '', 1, 'qmGhvavvcuT3WQpHV16oLhxtb5u2d3798e7Br9UiAR9G4IOsgGWsIlUH22ID', NULL, '2021-08-19 21:17:22', '2023-06-07 02:34:38'),
+	(8, 1, '[1,3]', 'YONATHAN', 'W.', 'Yonathan', 'yonathanwilliammc@gmail.com', '$2y$10$KiBQiYHBP5C9AB5qTkW/2O6.8PrxkvRoqWxuNjo3v9Ex2SGuJUPL2', '', 1, 'yMT4Pynuqva1q7kjheY9POmOw4Owx5Frd0qjj3DLNHSvMOeq70bW9rcTlKTg', NULL, '2021-08-19 21:17:22', '2023-06-08 01:11:03'),
 	(9, 1, '[1,3]', 'Shani', 'Dayanani', 'sdayanani', 'sdayanani@dpgdutyfree.com', '$2y$10$Wi9p2/mIR166jF9ZeqwMtO2gMRo1CftVVt5HtZiTJZYET7s8jGd4a', '', 1, 'uj46dFEb14FkfUxmb9lqTvMoW46JeiQK7xlF3hKZWnxQyvyHAAnwsjRjBCuC', NULL, '2021-08-30 03:05:37', '2021-08-30 03:05:37'),
 	(13, 2, NULL, 'Asdasd', '', 'Juan', 'jaun@gmail.com', '$2y$10$P3TO4V0h3s8y.nagbxxVMuR7TlY82LuLS2aEq0FoGo7hr5c/VT7dm', '', 9, 'RNP7HPs3f3oZ6k0Mv9bzJDa18CekZUdAgdqDTfCmBWXki6Q1jfBHQJZ0a8lG', NULL, '2022-08-23 10:45:00', '2022-08-24 01:35:26'),
 	(14, 1, NULL, 'Test', '', 'Test', 'test@gmail.com', '$2y$10$WkyVbUP22HBhLi/TJ5pfQO1FZGctS3cwI0y9BoW2Qs1xis/iELAZ6', '', 9, 'ggAsAs7i2AtzplT33orDhHH4WLnmYtWMduNbIWrUtAvCh7b4sDkWHIPZptkg', NULL, '2022-08-23 11:37:17', '2022-08-23 11:38:35'),

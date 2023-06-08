@@ -11,6 +11,16 @@ menu.push({
     icon: 'cil-speedometer',
 })
 
+if(user_permissions.indexOf('SaleList') > -1 ){
+  menu.push({
+      component: 'CNavItem',
+      name: 'Venta',
+      to: '/ventas',
+      icon: 'cil-speedometer',
+  })
+
+}
+
 
 if(user_permissions.indexOf('ClientList') > -1 || user_permissions.indexOf('ProviderList') > -1 ){
   let item = [];
@@ -52,20 +62,15 @@ if(user_permissions.indexOf('ProductList') > -1 || user_permissions.indexOf('Cat
   )
 }
 
-if(user_permissions.indexOf('PurchaseList') > - 1 ){
-  let item = [];
-  if (user_permissions.indexOf('PurchaseList') > -1) {
-    item.push({component: 'CNavItem', name: 'Compra', to: '/compras/listar',});
-  }
-  menu.push(
-    {
-      component: 'CNavGroup',
-      name: 'Compra',
+
+
+if(user_permissions.indexOf('PurchaseList') > -1 ){
+  menu.push({
+      component: 'CNavItem',
+      name: 'Compras',
       to: '/compras',
-      icon: 'cil-star',
-      items: item,
-    }
-  )
+      icon: 'cil-speedometer',
+  })
 
 }
 

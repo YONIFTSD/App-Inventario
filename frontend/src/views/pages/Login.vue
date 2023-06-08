@@ -100,7 +100,7 @@ function Login() {
           showConfirmButton: false,
           timer: 3000,
         });
-        me.$router.push({ name: "DailySettlementIncomeList" });
+        me.$router.push({ name: "Home" });
 
       setTimeout(function(){
           me.$router.go(0)

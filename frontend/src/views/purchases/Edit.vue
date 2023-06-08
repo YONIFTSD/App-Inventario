@@ -5,75 +5,109 @@
         <CCardHeader>
             <b-row>
                 <b-col md="10">
-                    <strong>Modulo de Ingresos | Editar</strong>
+                    <strong>Modulo de Compras | Editar</strong>
                 </b-col>
                 <b-col md="2">
-                    <b-link :to="{ path: '/ingresos/listar' }" class="btn btn-sm form-control btn-primary" append title="Regresar" ><font-awesome-icon icon="fa-solid fa-circle-chevron-left" /> Regresar</b-link >
+                    <b-link :to="{ path: '/compras/listar' }" class="btn btn-sm form-control btn-primary" append title="Regresar" ><font-awesome-icon icon="fa-solid fa-circle-chevron-left" /> Regresar</b-link >
                 </b-col>
             </b-row>
         </CCardHeader>
         <CCardBody>
             <b-form @submit="Validate">
-              
+
                 <b-row class="justify-content-center">
 
                     <b-col md="2">
-                        <b-form-group label="Código" :description="errors.code">
-                            <b-form-input readonly class="text-center" size="sm" v-model="income.code"></b-form-input>
-                        </b-form-group> 
-                    </b-col>
-
-                    <b-col md="4">
-                        <b-form-group label="Empresa" :description="errors.id_business">
-                            <b-form-select disabled size="sm" v-model="income.id_business" :options="business"></b-form-select>
-                        </b-form-group> 
-                    </b-col>
-
-                   
-
-                    <b-col md="2">
-                        <b-form-group label="Año" :description="errors.year">
-                            <b-form-select size="sm" v-model="income.year" :options="year"></b-form-select>
-                        </b-form-group> 
+                        <b-form-group label="Comprobante" :description="errors.type_invoice">
+                            <b-form-select size="sm" v-model="purchase.type_invoice" :options="type_invoice"></b-form-select>
+                        </b-form-group>
                     </b-col>
 
                     <b-col md="2">
-                        <b-form-group label="Mes" :description="errors.month">
-                            <b-form-select size="sm" v-model="income.month" :options="month"></b-form-select>
-                        </b-form-group> 
+                        <b-form-group label="Serie" :description="errors.serie">
+                            <b-form-input class="text-center" size="sm" v-model="purchase.serie"></b-form-input>
+                        </b-form-group>
                     </b-col>
 
                     <b-col md="2">
-                        <b-form-group label="Total PEN" :description="errors.total_pen">
-                            <b-form-input type="number" class="text-end" step="any" size="sm" v-model="income.total_pen"></b-form-input>
-                        </b-form-group> 
-                    </b-col>
-           
-                    <b-col md="2">
-                        <b-form-group label="Total USD" :description="errors.total_usd">
-                            <b-form-input type="number" class="text-end" step="any" size="sm" v-model="income.total_usd"></b-form-input>
-                        </b-form-group> 
+                        <b-form-group label="Numero" :description="errors.number">
+                            <b-form-input class="text-center" size="sm" v-model="purchase.number"></b-form-input>
+                        </b-form-group>
                     </b-col>
 
-                    <b-col md="8">
+                    <b-col md="2">
+                        <b-form-group label="Fecha Emisión" :description="errors.broadcast_date">
+                            <b-form-input type="date" class="text-center" size="sm" v-model="purchase.broadcast_date"></b-form-input>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col md="2">
+                        <b-form-group label="Moneda" :description="errors.coin">
+                            <b-form-select size="sm" v-model="purchase.coin" :options="coin"></b-form-select>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col md="2">
+                        <b-form-group label="Tipo de Operación" :description="errors.type_operation">
+                            <b-form-select size="sm" v-model="purchase.type_operation" :options="type_operation"></b-form-select>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col md="6">
+                        <b-form-group label="Proveedor" :description="errors.id_provider">
+                            <b-form-select size="sm" v-model="purchase.id_provider" :options="providers"></b-form-select>
+                        </b-form-group>
+                    </b-col>
+
+                    <b-col md="6">
                         <b-form-group label="Observación">
-                            <b-form-input size="sm"  v-model="income.observation"></b-form-input>
-                        </b-form-group> 
+                            <b-form-input size="sm"  v-model="purchase.observation"></b-form-input>
+                        </b-form-group>
                     </b-col>
 
-                    <b-col md="2">
-                        <b-form-group label="Estado">
-                            <b-form-select size="sm" v-model="income.state" :options="state"></b-form-select>
-                        </b-form-group> 
+                    <b-col md="12">
+                      <PurchaseDetail />
+                    </b-col>
+
+                    <b-col md="9"> </b-col>
+                    <b-col md="3">
+                      <table class="table table-hover table-striped table-bordered align-middle">
+                        <thead>
+                          <tr>
+                            <th class="text-start">Ope. Gravadas:</th>
+                            <th class="text-end">{{purchase_total.taxed_operation}}</th>
+                          </tr>
+                          <tr>
+                            <th class="text-start">Ope. Exoneradas:</th>
+                            <th class="text-end">{{purchase_total.exonerated_operation}}</th>
+                          </tr>
+                          <tr>
+                            <th class="text-start">Ope. Inafectas:</th>
+                            <th class="text-end">{{purchase_total.unaffected_operation}}</th>
+                          </tr>
+                          <tr>
+                            <th class="text-start">IGV:</th>
+                            <th class="text-end">{{purchase_total.igv}}</th>
+                          </tr>
+                          <tr>
+                            <th class="text-start">Total:</th>
+                            <th class="text-end">{{purchase_total.total}}</th>
+                          </tr>
+                        </thead>
+                      </table>
                     </b-col>
                 </b-row>
-                
+
                 <b-row class="justify-content-center">
-                
+                    <b-col md="2">
+                        <b-form-group>
+                            <b-button type="button" @click="ShowModalProducts" class="form-control" size="sm" variant="primary"><font-awesome-icon icon="fa-solid fa-floppy-disk" /> Productos</b-button>
+                        </b-form-group>
+                    </b-col>
                     <b-col md="2">
                         <b-form-group>
                             <b-button class="form-control" size="sm" variant="primary" type="submit"><font-awesome-icon icon="fa-solid fa-floppy-disk" /> Guardar (F4)</b-button>
-                        </b-form-group> 
+                        </b-form-group>
                     </b-col>
                 </b-row>
             </b-form>
@@ -82,8 +116,9 @@
     </CCol>
   </CRow>
 
-    <LoadingComponent :is-visible="isLoading" />
-  <!-- <Keypress key-event="keyup" :key-code="115" @success="Validate" /> -->
+  <LoadingComponent :is-visible="isLoading" />
+  <ModalProducts />
+
 </template>
 
 <script>
@@ -96,186 +131,187 @@ var moment = require("moment");
 import LoadingComponent from '@/views/pages/Loading'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-
+import { mapActions } from "vuex";
+import ModalProducts from '@/views/purchases/components/ModalProducts'
+import PurchaseDetail from '@/views/purchases/components/PurchaseDetail'
 export default {
-    name: 'UserAdd',
-    props: ['id_income'],
+    name: 'PurchaseEdit',
+    props: ['id_purchase'],
     components: {
         Keypress: () => import('vue-keypress'),
         LoadingComponent,
+        ModalProducts,
+        PurchaseDetail,
     },
     data() {
       return {
         isLoading:false,
-        module:'Income',
-        role:'Edit',
-        income:{
-            id_income:'',
-            id_user:'',
-            id_business:'',
-            code:'',
-            date:moment(new Date()).local().format("YYYY-MM-DD"),
-            year:moment(new Date()).local().format("YYYY"),
-            month:moment(new Date()).local().format("MM"),
-            observation:'',
-            exchange_rate:'1.00',
-            total_pen:'0.00',
-            total_usd:'0.00',
-            state:'1',
+        module:'Purchase',
+        role:'Add',
+        purchase:{
+            id_purchase: '',
+            id_provider: '',
+            type_invoice: '01',
+            serie: '',
+            number: '',
+            broadcast_date: moment(new Date()).local().format("YYYY-MM-DD"),
+            coin: 'PEN',
+            type_operation: '02',
+            observation: '',
+            taxed_operation: '',
+            exonerated_operation: '',
+            unaffected_operation: '',
+            igv: '',
+            total: '',
+            state: '1',
+            purchase_detail: [],
         },
-        business:[],
-        state:[
-            {value:1,text:'Activo'},
-            {value:0,text:'Inactivo'},
+        type_invoice:[
+            {value:'NV',text:'Nota de Venta'},
+            {value:'03',text:'Boleta de Venta'},
+            {value:'01',text:'Factura'},
+            {value:'ns',text:'Nota de Salida'},
         ],
         coin:[
-            {value:'PEN',text:'PEN'},
-            {value:'USD',text:'USD'},
+            {value:'PEN',text:'Soles'},
+            {value:'USD',text:'Dólares'},
         ],
-        year:[
-            {value:"2020",text:'2020'},
-            {value:"2021",text:'2021'},
-            {value:"2022",text:'2022'},
-            {value:"2023",text:'2023'},
-            {value:"2024",text:'2024'},
-            {value:"2025",text:'2025'},
-            {value:"2026",text:'2026'},
-            {value:"2027",text:'2027'},
-            {value:"2028",text:'2028'},
+        type_operation:[
+            {value:'02',text:'Compra Nacional'},
+            {value:'03',text:'Bonificación'},
+            {value:'02',text:'Importación'},
+            {value:'02',text:'Ajuste Por Diferencia de Inventario'},
         ],
-        month:[
-            {value:"01",text:'Enero'},
-            {value:"02",text:'Febrero'},
-            {value:"03",text:'Marzo'},
-            {value:"04",text:'Abril'},
-            {value:"05",text:'Mayo'},
-            {value:"06",text:'Junio'},
-            {value:"07",text:'Julio'},
-            {value:"08",text:'Agosto'},
-            {value:"09",text:'Septiembre'},
-            {value:"10",text:'Octubre'},
-            {value:"11",text:'Noviembre'},
-            {value:"12",text:'Diciembre'},
-        ],
+        providers: [],
         errors:{
-            id_business:'',
-            code:'',
-            date:'',
-            year:'',
-            month:'',
-            total_pen:'',
-            total_usd:'',
+            id_provider:'',
+            type_invoice:'',
+            serie:'',
+            number:'',
+            broadcast_date:'',
+            coin:'',
+            type_operation:'',
         },
         validate: false,
-        
+
       }
     },
     mounted() {
-        this.ViewIncome();
-        this.ListBusiness();
+      this.LoadResetPurchase();
+      this.ListProvider();
+      this.ViewPurchase();
     },
     methods: {
-        ListBusiness,
-        ViewIncome,
-        GetIncomeBusiness,
+        ViewPurchase,
+        ListProvider,
+        ShowModalProducts,
         Validate,
-        EditIncome,
+        EditPurchase,
+        ...mapActions(["LoadResetPurchase"]),
+        ...mapActions(["LoadAddPurchaseDetail"]),
+
     },
     setup() {
         const store = useStore()
         const user = window.localStorage.getItem("user");
         return {
             url_base: computed(() => store.state.url_base),
+            purchase_detail: computed(() => store.state.purchase_detail),
+            purchase_total: computed(() => store.state.purchase_total),
+
             muser: JSON.parse(JSON.parse(je.decrypt(user))),
         }
     },
-    
+
 }
 
-function ListBusiness() {
-    let me = this;
-    let url = this.url_base + "data-manager/list-business"
-    axios({
-        method: "GET",
-        url: url,
-        headers: {token:this.muser.api_token, module:this.module, role:this.role},
-    }).then(function (response) {
-        me.business = [{value:'', text: '-- Seleccione una opción --'}];
-        if (response.data.status == 200) {
-           response.data.result.map((item) => {
-            me.business.push({value: item.id_business, text: item.name});
-           }); 
-        }
-    }).catch((error) => {
-        Swal.fire({ icon: 'error', text: 'A ocurrido un error', timer: 3000,})
-    });
-}
+function ViewPurchase() {
 
-function ViewIncome() {
     let me = this;
-    let id_income = je.decrypt(me.id_income);
-    let url = this.url_base + "incomes/view/"+id_income;
-    axios({
-        method: "GET",
-        url: url,
-        headers: {token:this.muser.api_token, module:this.module, role:this.role},
-    }).then(function (response) {
-        if (response.data.status == 200) {
-       
-           me.income.id_income = response.data.result.id_income;
-            me.income.id_user = response.data.result.id_user;
-            me.income.id_business = response.data.result.id_business;
-            me.income.code = response.data.result.code;
-            me.income.date = response.data.result.date;
-            me.income.year = response.data.result.year;
-            me.income.month = response.data.result.month;
-            me.income.observation = response.data.result.observation;
-            me.income.exchange_rate = response.data.result.exchange_rate;
-            me.income.total_pen = response.data.result.total_pen;
-            me.income.total_usd = response.data.result.total_usd;
-            me.income.state = response.data.result.state;
-        }
-    }).catch((error) => {
-        Swal.fire({ icon: 'error', text: 'A ocurrido un error', timer: 3000,})
-    });
-}
-
-function GetIncomeBusiness() {
-    let me = this;
-    let url = this.url_base + "incomes/get-income-business";
-    if (this.income.id_business.length == 0) {
-        return false;
-    }
-    let data = {
-        id_business: this.income.id_business,
-        year: this.income.year,
-        month: this.income.month,
-    };
+    let id_purchase = je.decrypt(me.id_purchase);
+    let url = this.url_base + "purchases/view/"+id_purchase;
     me.isLoading = true;
     axios({
-        method: "POST",
+        method: "GET",
         url: url,
-        data: data,
         headers: {token:this.muser.api_token, module:this.module, role:this.role},
     }).then(function (response) {
         if (response.data.status == 200) {
-           me.income.total_pen = response.data.result.total_utility_pen;
-           me.income.total_usd = response.data.result.total_utility_usd;
+            me.purchase.id_purchase = response.data.result.purchase.id_purchase;
+            me.purchase.id_provider = response.data.result.purchase.id_provider;
+            me.purchase.type_invoice = response.data.result.purchase.type_invoice;
+            me.purchase.serie = response.data.result.purchase.serie;
+            me.purchase.number = response.data.result.purchase.number;
+            me.purchase.broadcast_date = response.data.result.purchase.broadcast_date;
+            me.purchase.coin = response.data.result.purchase.coin;
+            me.purchase.type_operation = response.data.result.purchase.type_operation;
+            me.purchase.observation = response.data.result.purchase.observation;
+            me.purchase.taxed_operation = response.data.result.purchase.taxed_operation;
+            me.purchase.exonerated_operation = response.data.result.purchase.exonerated_operation;
+            me.purchase.unaffected_operation = response.data.result.purchase.unaffected_operation;
+            me.purchase.igv = response.data.result.purchase.igv;
+            me.purchase.total = response.data.result.purchase.total;
+            me.purchase.state = response.data.result.purchase.state;
+
+            response.data.result.purchase_detail.forEach(element => {
+                let data = {
+                  id_product: element.id_product,
+                  code: element.code,
+                  name: element.name,
+                  igv: element.igv,
+                  category_name: element.category_name,
+                  quantity: parseFloat(element.quantity).toFixed(2),
+                  unit_price: parseFloat(element.unit_price).toFixed(2),
+                  total_price: parseFloat(element.total_price).toFixed(2),
+                }
+                me.LoadAddPurchaseDetail(data);
+            });
+
         }
         me.isLoading = false;
     }).catch((error) => {
+        console.log(error)
         Swal.fire({ icon: 'error', text: 'A ocurrido un error', timer: 3000,})
         me.isLoading = false;
     });
 }
 
+function ListProvider() {
+    let me = this;
+    let url = this.url_base + "providers/list-active"
+    axios({
+        method: "GET",
+        url: url,
+        headers: {token:this.muser.api_token, module:this.module, role:this.role},
+    }).then(function (response) {
+        me.providers = [{value:'', text: '-- Seleccion un proveedor --'}];
+        if (response.data.status == 200) {
+           response.data.result.map((item) => {
+            me.providers.push({value: item.id_provider, text: item.name+' - ' + item.document_number});
+           });
+        }
+    }).catch((error) => {
+        Swal.fire({ icon: 'error', text: 'A ocurrido un error', timer: 3000,})
+    });
+}
 
-function EditIncome() {
+
+function ShowModalProducts() {
+    this.emitter.emit('ShowModalProducts')
+}
+
+function EditPurchase() {
 
     let me = this;
-    let url = this.url_base + "incomes/edit";
-    this.income.id_user = this.muser.id_user;
-    let data = this.income;
+    let url = this.url_base + "purchases/edit";
+    this.purchase.id_user = this.muser.id_user;
+    this.purchase.purchase_detail = this.purchase_detail;
+    this.purchase.taxed_operation = this.purchase_total.taxed_operation;
+    this.purchase.exonerated_operation = this.purchase_total.exonerated_operation;
+    this.purchase.unaffected_operation = this.purchase_total.unaffected_operation;
+    this.purchase.igv = this.purchase_total.igv;
+    this.purchase.total = this.purchase_total.total;
+    let data = this.purchase;
     me.isLoading = true;
     axios({
         method: "PUT",
@@ -297,21 +333,21 @@ function EditIncome() {
 
 function Validate() {
     this.validate = false;
-    
-    this.errors.id_business = this.income.id_business.length == 0 ? 'Seleccione un gasto':'';
-    this.errors.code = this.income.code.length == 0 ? 'Ingrese un código':'';
-    this.errors.year = this.income.year.length == 0 ? 'Seleccione un año':'';
-    this.errors.month = this.income.month.length == 0 ? 'Seleccione un mes':'';
-    this.errors.total_pen = this.income.total_pen.length == 0 ? 'Ingrese un monto':'';
-    this.errors.total_usd = this.income.total_usd.length == 0 ? 'Ingrese un monto':'';
+
+    this.errors.id_provider = this.purchase.id_provider.length == 0 ? 'Seleccione un proveedor':'';
+    this.errors.type_invoice = this.purchase.type_invoice.length == 0 ? 'Seleccione un comprobante':'';
+    this.errors.serie = this.purchase.serie.length == 0 ? 'Ingrese una serie':'';
+    this.errors.number = this.purchase.number.length == 0 ? 'Ingrese un numero':'';
+    this.errors.broadcast_date = this.purchase.broadcast_date.length == 0 ? 'Ingrese una fecha':'';
+    this.errors.type_operation = this.purchase.type_operation.length == 0 ? 'Ingrese un tipo de Operación':'';
 
 
-    if (this.errors.id_business.length > 0) this.validate = true;
-    if (this.errors.code.length > 0) this.validate = true;
-    if (this.errors.year.length > 0) this.validate = true;
-    if (this.errors.month.length > 0) this.validate = true;
-    if (this.errors.total_pen.length > 0) this.validate = true;
-    if (this.errors.total_usd.length > 0) this.validate = true;
+    if (this.errors.id_provider.length > 0) this.validate = true;
+    if (this.errors.type_invoice.length > 0) this.validate = true;
+    if (this.errors.serie.length > 0) this.validate = true;
+    if (this.errors.number.length > 0) this.validate = true;
+    if (this.errors.broadcast_date.length > 0) this.validate = true;
+    if (this.errors.type_operation.length > 0) this.validate = true;
 
     if (this.validate) {
         Swal.fire({ icon: 'warning', text: 'Verifique que campos necesarios esten llenados', timer: 2000,});
@@ -319,7 +355,7 @@ function Validate() {
     }
 
      Swal.fire({
-      title: "Esta seguro de modificar el ingreso?",
+      title: "Esta seguro de modificar la compra?",
       text: "",
       icon: "warning",
       showCancelButton: true,
@@ -328,7 +364,7 @@ function Validate() {
       confirmButtonText: "Si, Estoy de acuerdo!",
     }).then((result) => {
       if (result.value) {
-        this.EditIncome();
+        this.EditPurchase();
       }
     });
 }

@@ -44,7 +44,8 @@
                             <th width="3%" class="text-center text-white" >#</th>
                             <th width="10%" class="text-center text-white" >Codigo</th>
                             <th width="30%" class="text-center text-white" >Nombre</th>
-                            <th width="25%" class="text-center text-white" >Categoria</th>
+                            <th width="20%" class="text-center text-white" >Categoria</th>
+                            <th width="7%" class="text-center text-white" >Stock</th>
                             <th width="7%" class="text-center text-white" >P. Compra</th>
                             <th width="7%" class="text-center text-white" >P- Venta</th>
                             <th width="7%" class="text-center text-white" >Estado</th>
@@ -57,6 +58,7 @@
                                 <td class="text-start">{{item.code}}</td>
                                 <td class="text-start">{{item.name}}</td>
                                 <td class="text-start">{{item.category_name}}</td>
+                                <td class="text-end">{{item.stock}}</td>
                                 <td class="text-end">{{item.purchase_price}}</td>
                                 <td class="text-end">{{item.sale_price}}</td>
                                 <td class="text-center">

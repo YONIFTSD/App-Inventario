@@ -55,6 +55,7 @@ $router->group(['middleware' => 'role'], function () use ($router) {
         $router->get('/view/{id_client}', 'ClientController@View');
 
         $router->post('/search-select', 'ClientController@SearchSelect');
+        $router->get('/list-active', 'ClientController@ListActives');
     });
 
 
@@ -65,6 +66,8 @@ $router->group(['middleware' => 'role'], function () use ($router) {
         $router->put('/edit', 'ProviderController@Update');
         $router->delete('/delete/{id_provider}', 'ProviderController@Delete');
         $router->get('/view/{id_provider}', 'ProviderController@View');
+
+        $router->get('/list-active', 'ProviderController@ListActives');
     });
 
     //categorias
@@ -88,34 +91,32 @@ $router->group(['middleware' => 'role'], function () use ($router) {
         $router->post('/search', 'ProductController@Search');
     });
 
+     //compras
+     $router->group(['prefix' => 'purchases'], function () use ($router) {
+        $router->get('/list/{from}/{to}/{search}', 'PurchaseController@ListAll');
+        $router->post('/add', 'PurchaseController@Store');
+        $router->put('/edit', 'PurchaseController@Update');
+        $router->delete('/delete/{id_purchase}', 'PurchaseController@Delete');
+        $router->get('/view/{id_purchase}', 'PurchaseController@View');
 
-    //cuenta por cobrar
-    $router->group(['prefix' => 'accounts-receivable'], function () use ($router) {
-        $router->get('/list/{state}/{search}', 'AccountReceivableController@ListAll');
-        $router->post('/add', 'AccountReceivableController@Store');
-        $router->put('/edit', 'AccountReceivableController@Update');
-        $router->delete('/delete/{id_account_receivable}', 'AccountReceivableController@Delete');
-        $router->get('/view/{id_account_receivable}', 'AccountReceivableController@View');
+        $router->post('/search', 'PurchaseController@Search');
     });
 
-
-    //pagos a cuenta
-    $router->group(['prefix' => 'accounts-receivable-payment'], function () use ($router) {
-        $router->get('/list/{id_account_receivable}', 'AccountReceivablePaymentController@ListAll');
-        $router->post('/add', 'AccountReceivablePaymentController@Store');
-        $router->put('/edit', 'AccountReceivablePaymentController@Update');
-        $router->delete('/delete/{id_account_receivable_payment}', 'AccountReceivablePaymentController@Delete');
-        $router->get('/view/{id_account_receivable_payment}', 'AccountReceivablePaymentController@View');
+      //compras
+      $router->group(['prefix' => 'sales'], function () use ($router) {
+        $router->get('/list/{from}/{to}/{search}', 'SaleController@ListAll');
+        $router->post('/add', 'SaleController@Store');
+        $router->put('/edit', 'SaleController@Update');
+        $router->delete('/delete/{id_sale}', 'SaleController@Delete');
+        $router->get('/view/{id_sale}', 'SaleController@View');
     });
 
-    //egresos diaria
-    $router->group(['prefix' => 'accounts-receivable-expenses'], function () use ($router) {
-        $router->get('/list/{from}/{to}/{search}', 'AccountReceivableExpenseController@ListAll');
-        $router->post('/add', 'AccountReceivableExpenseController@Store');
-        $router->put('/edit', 'AccountReceivableExpenseController@Update');
-        $router->delete('/delete/{id_expense}', 'AccountReceivableExpenseController@Delete');
-        $router->get('/view/{id_expense}', 'AccountReceivableExpenseController@View');
+     //data
+     $router->group(['prefix' => 'data'], function () use ($router) {
+        $router->get('/get-series/{type_invoice}', 'DataManagerController@GetSeries');
+        $router->get('/get-series-by-id/{id_serie}', 'DataManagerController@GetSeriesById');
     });
+
 
 
     //report
@@ -132,19 +133,3 @@ $router->group(['middleware' => 'role'], function () use ($router) {
     });
 
 });
-
-
-$router->group(['prefix' => 'audit'], function () use ($router) {
-    $router->post('/add', 'AuditController@Store');
-});
-
-
-$router->get('/excel-report-utility-daily-settlement/{from}/{to}/{coin}', 'ReportController@ExcelUtilityDailySettlement');
-$router->get('/excel-report-utility-management/{from}/{to}/{coin}', 'ReportController@ExcelUtilityManagement');
-$router->get('/excel-report-utility-account-receivable/{from}/{to}/{coin}', 'ReportController@ExcelUtilityAccountReceivable');
-$router->get('/excel-report-utility/{from}/{to}/{coin}', 'ReportController@ExcelUtility');
-
-$router->get('/excel-report-month-utility-daily-settlement/{month}', 'ReportController@ExcelMonthUtilityDailySettlement');
-$router->get('/excel-report-month-utility-management/{month}', 'ReportController@ExcelMonthUtilityManagement');
-$router->get('/excel-report-month-utility-account-receivable/{month}', 'ReportController@ExcelMonthUtilityAccountReceivable');
-$router->get('/excel-report-month-utility/{month}', 'ReportController@ExcelMonthUtility');

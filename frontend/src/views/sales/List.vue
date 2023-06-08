@@ -5,7 +5,7 @@
         <CCardHeader>
             <b-row>
                 <b-col md="12">
-                    <strong>Modulo de Compras | Listar</strong>
+                    <strong>Modulo de Venta | Listar</strong>
                 </b-col>
             </b-row>
 
@@ -15,20 +15,20 @@
                 <b-col md="4"></b-col>
                 <b-col md="2">
                     <b-form-group label="Desde">
-                        <b-form-input @change="ListPurchase" type="date" class="text-center" :max="to" size="sm" v-model="from"></b-form-input>
+                        <b-form-input @change="ListSale" type="date" class="text-center" :max="to" size="sm" v-model="from"></b-form-input>
                     </b-form-group>
                 </b-col>
                 <b-col md="2">
                     <b-form-group label="Hasta">
-                        <b-form-input @change="ListPurchase" type="date" class="text-center" :min="from" size="sm" v-model="to"></b-form-input>
+                        <b-form-input @change="ListSale" type="date" class="text-center" :min="from" size="sm" v-model="to"></b-form-input>
                     </b-form-group>
                 </b-col>
                 <b-col md="3">
                     <b-form-group label=".">
                         <b-input-group>
-                        <b-form-input @keyup="ListPurchase" size="sm" type="search" v-model="search" class="form-control" ></b-form-input>
+                        <b-form-input @keyup="ListSale" size="sm" type="search" v-model="search" class="form-control" ></b-form-input>
                         <b-input-group-append>
-                            <b-button size="sm" variant="primary" @click="ListPurchase">
+                            <b-button size="sm" variant="primary" @click="ListSale">
                             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
                             </b-button>
                         </b-input-group-append>
@@ -36,8 +36,8 @@
                     </b-form-group>
                 </b-col>
                 <b-col md="1">
-                    <b-form-group v-if="Permission('PurchaseAdd')" label=".">
-                        <b-link class="btn btn-sm form-control btn-primary" :to="{ path: '/compras/nuevo' }" append title="Nuevo" ><font-awesome-icon icon="fa-solid fa-file-circle-plus" /></b-link >
+                    <b-form-group v-if="Permission('SaleAdd')" label=".">
+                        <b-link class="btn btn-sm form-control btn-primary" :to="{ path: '/ventas/nuevo' }" append title="Nuevo" ><font-awesome-icon icon="fa-solid fa-file-circle-plus" /></b-link >
                     </b-form-group>
                 </b-col>
 
@@ -66,7 +66,7 @@
                                 <td class="text-center">{{item.broadcast_date}}</td>
                                 <td class="text-center">{{item.type_invoice + ' ' + item.serie + '-'+ item.number }}</td>
 
-                                <td class="text-start">{{item.provider_name + ' - '+ item.provider_document_number}}</td>
+                                <td class="text-start">{{item.client_name + ' - '+ item.client_document_number}}</td>
                                 <td class="text-end">{{item.coin}}</td>
                                 <td class="text-end">{{item.total}}</td>
                                 <td class="text-center">
@@ -75,9 +75,9 @@
                                 </td>
                                 <td class="text-center">
                                     <b-dropdown variant="dark" dark right size="sm" text="Acciones">
-                                        <b-dropdown-item v-if="Permission('PurchaseEdit')" @click="PageEdit(item.id_purchase)"><font-awesome-icon title="Editar" icon="fa-solid fa-pen-to-square" /> Editar</b-dropdown-item>
-                                        <b-dropdown-item v-if="Permission('PurchaseView')" @click="PageView(item.id_purchase)"><font-awesome-icon title="Ver" icon="fa-solid fa-eye" /> Ver</b-dropdown-item>
-                                        <b-dropdown-item v-if="Permission('PurchaseDelete')" @click="ConfirmDelete(item.id_purchase)"><font-awesome-icon title="Eliminar" icon="fa-solid fa-trash-can" /> Eliminar</b-dropdown-item>
+                                        <b-dropdown-item v-if="Permission('ClientEdit')" @click="PageEdit(item.id_sale)"><font-awesome-icon title="Editar" icon="fa-solid fa-pen-to-square" /> Editar</b-dropdown-item>
+                                        <b-dropdown-item v-if="Permission('ClientView')" @click="PageView(item.id_sale)"><font-awesome-icon title="Ver" icon="fa-solid fa-eye" /> Ver</b-dropdown-item>
+                                        <b-dropdown-item v-if="Permission('ClientDelete')" @click="ConfirmDelete(item.id_sale)"><font-awesome-icon title="Eliminar" icon="fa-solid fa-trash-can" /> Eliminar</b-dropdown-item>
                                     </b-dropdown>
                                 </td>
                             </tr>
@@ -91,7 +91,7 @@
                     v-model="currentPage"
                     :total-rows="rows"
                     :per-page="perPage"
-                    @click="ListPurchase"
+                    @click="ListSale"
                     ></b-pagination>
                 </b-col>
             </b-row>
@@ -114,10 +114,10 @@ import CodeToName from "@/assets/js/CodeToName";
 import Permissions from "@/assets/js/Permissions";
 
 export default {
-    name: 'PurchaseList',
+    name: 'SaleList',
     data() {
       return {
-        module:'Purchase',
+        module:'Sale',
         role:'List',
         to:moment(new Date()).local().format("YYYY-MM-DD"),
         from:moment().subtract(30, 'days').local().format("YYYY-MM-DD"),
@@ -131,10 +131,10 @@ export default {
       }
     },
     mounted() {
-        this.ListPurchase();
+        this.ListSale();
     },
     methods: {
-        ListPurchase,
+        ListSale,
         PageEdit,
         PageView,
         ConfirmDelete,
@@ -157,10 +157,10 @@ function NameMonth(code) {
   return CodeToName.NameMonth(code);
 }
 
-function ListPurchase() {
+function ListSale() {
     let me = this;
     let search = this.search == "" ? "all" : this.search;
-    let url = this.url_base + "purchases/list/" + this.from+"/"+this.to +"/" + search + "?page=" + this.currentPage;
+    let url = this.url_base + "sales/list/" + this.from+"/"+this.to +"/" + search + "?page=" + this.currentPage;
     axios({
         method: "GET",
         url: url,
@@ -178,23 +178,23 @@ function ListPurchase() {
     });
 }
 
-function PageEdit(id_purchase) {
+function PageEdit(id_sale) {
     this.$router.push({
-        name: "PurchaseEdit",
-        params: { id_purchase: je.encrypt(id_purchase) },
+        name: "SaleEdit",
+        params: { id_sale: je.encrypt(id_sale) },
     });
 }
 
-function PageView(id_purchase) {
+function PageView(id_sale) {
     this.$router.push({
-        name: "PurchaseView",
-        params: { id_purchase: je.encrypt(id_purchase) },
+        name: "SaleView",
+        params: { id_sale: je.encrypt(id_sale) },
     });
 }
 
-function ConfirmDelete(id_purchase) {
+function ConfirmDelete(id_sale) {
     Swal.fire({
-        title: "Esta seguro de eliminar la compra?",
+        title: "Esta seguro de eliminar la venta?",
         text: "No podrás revertir esto!",
         icon: "warning",
         showCancelButton: true,
@@ -203,21 +203,21 @@ function ConfirmDelete(id_purchase) {
         confirmButtonText: "Si, Estoy de acuerdo!",
     }).then((result) => {
         if (result.value) {
-        this.Delete(id_purchase);
+        this.Delete(id_sale);
         }
     });
 }
 
-function Delete(id_purchase) {
+function Delete(id_sale) {
     let me = this;
-    let url = this.url_base + "purchases/delete/" + id_purchase;
+    let url = this.url_base + "sales/delete/" + id_sale;
     axios({
         method: "delete",
         url: url,
         headers: {token: this.muser.api_token,module: this.module,role: 'Delete'},
     }).then(function (response) {
       if (response.data.status == 200) {
-        const index = me.data_table.map(item => item.id_purchase).indexOf(response.data.result.id_purchase);
+        const index = me.data_table.map(item => item.id_sale).indexOf(response.data.result.id_sale);
         me.data_table.splice(index, 1);
         Swal.fire({ icon: 'success', text: response.data.message, timer: 3000,})
       } else {

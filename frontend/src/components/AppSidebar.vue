@@ -3,7 +3,7 @@
     position="fixed"
     :unfoldable="sidebarUnfoldable"
     :visible="sidebarVisible"
-  
+
   >
   <!-- @visible-change="(event) => $store.commit({type: 'updateSidebarVisible', value: event,})" -->
     <CSidebarBrand>
@@ -41,10 +41,10 @@ export default {
     AppSidebarNav,
   },
     mounted() {
-    this.fetchIpAddress();
+
   },
   methods:{
-    ...mapActions(['fetchIpAddress']),
+
   },
   setup() {
     const store = useStore()
@@ -59,6 +59,6 @@ export default {
 }
 
 
-        
-          
+
+
 </script>

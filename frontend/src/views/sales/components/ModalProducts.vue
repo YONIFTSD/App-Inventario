@@ -18,8 +18,9 @@
                         <thead>
                           <tr>
                             <th width="10%" class="text-center">Código</th>
-                            <th width="47%" class="text-center">Nombre</th>
+                            <th width="38%" class="text-center">Nombre</th>
                             <th width="20%" class="text-center">Categoria</th>
+                            <th width="8%" class="text-center">Stock</th>
                             <th width="15%" class="text-center">Cantidad</th>
                             <th width="7%" class="text-center"></th>
                           </tr>
@@ -29,6 +30,7 @@
                             <td class="text-center">{{ item.code }}</td>
                             <td class="text-left">{{ item.name }}</td>
                             <td class="text-left">{{ item.category_name }}</td>
+                            <td class="text-end">{{ item.stock }}</td>
                             <td class="text-center">
                               <b-form-input size="sm" :ref="'mPDQuantity'+it" class="form-control text-end" type="number" step="any" v-model="item.quantity"></b-form-input>
                             </td>
@@ -60,7 +62,7 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { mapActions } from 'vuex'
 export default {
-    name: 'UserAdd',
+    name: 'SaleAdd',
     components: {
         Keypress: () => import('vue-keypress'),
         LoadingComponent,
@@ -69,7 +71,7 @@ export default {
       return {
         modal_products: false,
         isLoading:false,
-        module:'Purchase',
+        module:'Sale',
         role:'Add',
         search:'',
         products:[],
@@ -86,7 +88,7 @@ export default {
         SearchProduct,
         AddProduct,
         ...mapActions([
-          'LoadAddPurchaseDetail',
+          'LoadAddSaleDetail',
         ]),
 
     },
@@ -95,7 +97,7 @@ export default {
         const user = window.localStorage.getItem("user");
         return {
             url_base: computed(() => store.state.url_base),
-            purchase_detail: computed(() => store.state.purchase_detail),
+            sale_detail: computed(() => store.state.sale_detail),
             muser: JSON.parse(JSON.parse(je.decrypt(user))),
         }
     },
@@ -118,7 +120,7 @@ function AddProduct(index) {
       unit_price: parseFloat(0).toFixed(2),
       total_price: parseFloat(0).toFixed(2),
     }
-    this.LoadAddPurchaseDetail(data);
+    this.LoadAddSaleDetail(data);
 }
 
 function SearchProduct() {

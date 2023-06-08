@@ -277,6 +277,40 @@ const routes = [
 
 
 
+  {
+    path: '/ventas',
+    redirect: '/ventas/listar',
+    component: DefaultLayout,
+    name: 'Sale',
+    children: [
+      {
+        path: 'listar',
+        name: 'SaleList',
+        component: () => import('@/views/sales/List'),
+      },
+      {
+        path: 'nuevo',
+        name: 'SaleAdd',
+        component: () => import('@/views/sales/Add'),
+      },
+      {
+        path: 'editar/:id_sale',
+        name: 'SaleEdit',
+        component: () => import('@/views/sales/Edit'),
+        props: true,
+      },
+      {
+        path: 'ver/:id_sale',
+        name: 'SaleView',
+        component: () => import('@/views/sales/View'),
+        props: true,
+      },
+    ],
+  },
+
+
+
+
 
 ]
 

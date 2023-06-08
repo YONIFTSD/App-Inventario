@@ -5,10 +5,10 @@
         <CCardHeader>
             <b-row>
                 <b-col md="10">
-                    <strong>Modulo de Compras | Nuevo</strong>
+                    <strong>Modulo de Ventas | Nuevo</strong>
                 </b-col>
                 <b-col md="2">
-                    <b-link :to="{ path: '/compras/listar' }" class="btn btn-sm form-control btn-primary" append title="Regresar" ><font-awesome-icon icon="fa-solid fa-circle-chevron-left" /> Regresar</b-link >
+                    <b-link :to="{ path: '/ventas/listar' }" class="btn btn-sm form-control btn-primary" append title="Regresar" ><font-awesome-icon icon="fa-solid fa-circle-chevron-left" /> Regresar</b-link >
                 </b-col>
             </b-row>
         </CCardHeader>
@@ -19,54 +19,58 @@
 
                     <b-col md="2">
                         <b-form-group label="Comprobante" :description="errors.type_invoice">
-                            <b-form-select size="sm" v-model="purchase.type_invoice" :options="type_invoice"></b-form-select>
+                            <select @change="GetSeries" class="form-control form-control-sm" v-model="sale.type_invoice">
+                              <option v-for="(item, it) in type_invoice" :key="it" :value="item.value">{{ item.text}}</option>
+                            </select>
                         </b-form-group>
                     </b-col>
 
                     <b-col md="2">
-                        <b-form-group label="Serie" :description="errors.serie">
-                            <b-form-input class="text-center" size="sm" v-model="purchase.serie"></b-form-input>
+                        <b-form-group label="Serie" :description="errors.id_serie">
+                            <select class="form-control form-control-sm" v-model="sale.id_serie">
+                              <option v-for="(item, it) in series" :key="it" :value="item.value">{{ item.text}}</option>
+                            </select>
                         </b-form-group>
                     </b-col>
 
                     <b-col md="2">
                         <b-form-group label="Numero" :description="errors.number">
-                            <b-form-input class="text-center" size="sm" v-model="purchase.number"></b-form-input>
+                            <b-form-input disabled class="text-center" size="sm" v-model="sale.number"></b-form-input>
                         </b-form-group>
                     </b-col>
 
                     <b-col md="2">
                         <b-form-group label="Fecha Emisión" :description="errors.broadcast_date">
-                            <b-form-input type="date" class="text-center" size="sm" v-model="purchase.broadcast_date"></b-form-input>
+                            <b-form-input type="date" class="text-center" size="sm" v-model="sale.broadcast_date"></b-form-input>
                         </b-form-group>
                     </b-col>
 
                     <b-col md="2">
                         <b-form-group label="Moneda" :description="errors.coin">
-                            <b-form-select size="sm" v-model="purchase.coin" :options="coin"></b-form-select>
+                            <b-form-select size="sm" v-model="sale.coin" :options="coin"></b-form-select>
                         </b-form-group>
                     </b-col>
 
                     <b-col md="2">
                         <b-form-group label="Tipo de Operación" :description="errors.type_operation">
-                            <b-form-select size="sm" v-model="purchase.type_operation" :options="type_operation"></b-form-select>
+                            <b-form-select size="sm" v-model="sale.type_operation" :options="type_operation"></b-form-select>
                         </b-form-group>
                     </b-col>
 
                     <b-col md="6">
-                        <b-form-group label="Proveedor" :description="errors.id_provider">
-                            <b-form-select size="sm" v-model="purchase.id_provider" :options="providers"></b-form-select>
+                        <b-form-group label="Cliente" :description="errors.id_client">
+                            <b-form-select size="sm" v-model="sale.id_client" :options="clients"></b-form-select>
                         </b-form-group>
                     </b-col>
 
                     <b-col md="6">
                         <b-form-group label="Observación">
-                            <b-form-input size="sm"  v-model="purchase.observation"></b-form-input>
+                            <b-form-input size="sm"  v-model="sale.observation"></b-form-input>
                         </b-form-group>
                     </b-col>
 
                     <b-col md="12">
-                      <PurchaseDetail />
+                      <SaleDetail />
                     </b-col>
 
                     <b-col md="9"> </b-col>
@@ -75,23 +79,23 @@
                         <thead>
                           <tr>
                             <th class="text-start">Ope. Gravadas:</th>
-                            <th class="text-end">{{purchase_total.taxed_operation}}</th>
+                            <th class="text-end">{{sale_total.taxed_operation}}</th>
                           </tr>
                           <tr>
                             <th class="text-start">Ope. Exoneradas:</th>
-                            <th class="text-end">{{purchase_total.exonerated_operation}}</th>
+                            <th class="text-end">{{sale_total.exonerated_operation}}</th>
                           </tr>
                           <tr>
                             <th class="text-start">Ope. Inafectas:</th>
-                            <th class="text-end">{{purchase_total.unaffected_operation}}</th>
+                            <th class="text-end">{{sale_total.unaffected_operation}}</th>
                           </tr>
                           <tr>
                             <th class="text-start">IGV:</th>
-                            <th class="text-end">{{purchase_total.igv}}</th>
+                            <th class="text-end">{{sale_total.igv}}</th>
                           </tr>
                           <tr>
                             <th class="text-start">Total:</th>
-                            <th class="text-end">{{purchase_total.total}}</th>
+                            <th class="text-end">{{sale_total.total}}</th>
                           </tr>
                         </thead>
                       </table>
@@ -132,30 +136,32 @@ import LoadingComponent from '@/views/pages/Loading'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { mapActions } from "vuex";
-import ModalProducts from '@/views/purchases/components/ModalProducts'
-import PurchaseDetail from '@/views/purchases/components/PurchaseDetail'
+import ModalProducts from '@/views/sales/components/ModalProducts'
+import SaleDetail from '@/views/sales/components/SaleDetail'
 export default {
-    name: 'UserAdd',
+    name: 'SaleAdd',
     components: {
         Keypress: () => import('vue-keypress'),
         LoadingComponent,
         ModalProducts,
-        PurchaseDetail,
+        SaleDetail,
     },
     data() {
       return {
         isLoading:false,
-        module:'Purchase',
+        module:'Sale',
         role:'Add',
-        purchase:{
-            id_purchase: '',
-            id_provider: '',
-            type_invoice: '01',
+        sale:{
+            id_sale: '',
+            id_user: '',
+            id_client: '',
+            id_serie: '',
+            type_invoice: '03',
             serie: '',
             number: '',
             broadcast_date: moment(new Date()).local().format("YYYY-MM-DD"),
             coin: 'PEN',
-            type_operation: '02',
+            type_operation: '01',
             observation: '',
             taxed_operation: '',
             exonerated_operation: '',
@@ -163,27 +169,25 @@ export default {
             igv: '',
             total: '',
             state: '1',
-            purchase_detail: [],
+            sale_detail: [],
         },
         type_invoice:[
             {value:'NV',text:'Nota de Venta'},
             {value:'03',text:'Boleta de Venta'},
             {value:'01',text:'Factura'},
-            {value:'ns',text:'Nota de Salida'},
         ],
+        series:[],
         coin:[
             {value:'PEN',text:'Soles'},
             {value:'USD',text:'Dólares'},
         ],
         type_operation:[
-            {value:'02',text:'Compra Nacional'},
-            {value:'03',text:'Bonificación'},
-            {value:'02',text:'Importación'},
-            {value:'02',text:'Ajuste Por Diferencia de Inventario'},
+            {value:'01',text:'Venta Nacional'},
         ],
-        providers: [],
+        clients: [],
         errors:{
-            id_provider:'',
+            id_serie:'',
+            id_client:'',
             type_invoice:'',
             serie:'',
             number:'',
@@ -196,15 +200,18 @@ export default {
       }
     },
     mounted() {
-      this.LoadResetPurchase();
-      this.ListProvider();
+      this.LoadResetSale();
+      this.ListClient();
+      this.GetSeries();
     },
     methods: {
-        ListProvider,
+        GetSeries,
+        GetSeriesById,
+        ListClient,
         ShowModalProducts,
         Validate,
-        AddPurchase,
-        ...mapActions(["LoadResetPurchase"]),
+        AddSale,
+        ...mapActions(["LoadResetSale"]),
 
     },
     setup() {
@@ -212,8 +219,8 @@ export default {
         const user = window.localStorage.getItem("user");
         return {
             url_base: computed(() => store.state.url_base),
-            purchase_detail: computed(() => store.state.purchase_detail),
-            purchase_total: computed(() => store.state.purchase_total),
+            sale_detail: computed(() => store.state.sale_detail),
+            sale_total: computed(() => store.state.sale_total),
 
             muser: JSON.parse(JSON.parse(je.decrypt(user))),
         }
@@ -221,18 +228,57 @@ export default {
 
 }
 
-function ListProvider() {
+function GetSeries() {
+
+    let type_invoice = this.sale.type_invoice;
     let me = this;
-    let url = this.url_base + "providers/list-active"
+    let url = this.url_base + "data/get-series/"+type_invoice;
+    me.series = [];
     axios({
         method: "GET",
         url: url,
         headers: {token:this.muser.api_token, module:this.module, role:this.role},
     }).then(function (response) {
-        me.providers = [{value:'', text: '-- Seleccion un proveedor --'}];
         if (response.data.status == 200) {
            response.data.result.map((item) => {
-            me.providers.push({value: item.id_provider, text: item.name+' - ' + item.document_number});
+            me.series.push({value: item.id_serie, text: item.serie});
+            me.sale.id_serie = item.id_serie;
+           });
+           me.GetSeriesById();
+        }
+    }).catch((error) => {
+        Swal.fire({ icon: 'error', text: 'A ocurrido un error', timer: 3000,})
+    });
+}
+
+function GetSeriesById() {
+    let me = this;
+    let url = this.url_base + "data/get-series-by-id/"+this.sale.id_serie;
+    axios({
+        method: "GET",
+        url: url,
+        headers: {token:this.muser.api_token, module:this.module, role:this.role},
+    }).then(function (response) {
+        if (response.data.status == 200) {
+           me.sale.number = response.data.result.number ;
+        }
+    }).catch((error) => {
+        Swal.fire({ icon: 'error', text: 'A ocurrido un error', timer: 3000,})
+    });
+}
+
+function ListClient() {
+    let me = this;
+    let url = this.url_base + "clients/list-active"
+    axios({
+        method: "GET",
+        url: url,
+        headers: {token:this.muser.api_token, module:this.module, role:this.role},
+    }).then(function (response) {
+        me.clients = [{value:'', text: '-- Seleccion un cliente --'}];
+        if (response.data.status == 200) {
+           response.data.result.map((item) => {
+            me.clients.push({value: item.id_client, text: item.name+' - ' + item.document_number});
            });
         }
     }).catch((error) => {
@@ -245,18 +291,18 @@ function ShowModalProducts() {
     this.emitter.emit('ShowModalProducts')
 }
 
-function AddPurchase() {
+function AddSale() {
 
     let me = this;
-    let url = this.url_base + "purchases/add";
-    this.purchase.id_user = this.muser.id_user;
-    this.purchase.purchase_detail = this.purchase_detail;
-    this.purchase.taxed_operation = this.purchase_total.taxed_operation;
-    this.purchase.exonerated_operation = this.purchase_total.exonerated_operation;
-    this.purchase.unaffected_operation = this.purchase_total.unaffected_operation;
-    this.purchase.igv = this.purchase_total.igv;
-    this.purchase.total = this.purchase_total.total;
-    let data = this.purchase;
+    let url = this.url_base + "sales/add";
+    this.sale.id_user = this.muser.id_user;
+    this.sale.sale_detail = this.sale_detail;
+    this.sale.taxed_operation = this.sale_total.taxed_operation;
+    this.sale.exonerated_operation = this.sale_total.exonerated_operation;
+    this.sale.unaffected_operation = this.sale_total.unaffected_operation;
+    this.sale.igv = this.sale_total.igv;
+    this.sale.total = this.sale_total.total;
+    let data = this.sale;
     me.isLoading = true;
     axios({
         method: "POST",
@@ -266,8 +312,8 @@ function AddPurchase() {
     }).then(function (response) {
         if (response.data.status == 201) {
             Swal.fire({ icon: 'success', text: response.data.message, timer: 3000})
-            me.LoadResetPurchase();
-            me.$router.push({name: "PurchaseList" });
+            me.LoadResetSale();
+            me.$router.push({name: "SaleList" });
         }else{
             Swal.fire({ icon: 'error', text: response.data.message, timer: 3000})
         }
@@ -281,17 +327,17 @@ function AddPurchase() {
 function Validate() {
     this.validate = false;
 
-    this.errors.id_provider = this.purchase.id_provider.length == 0 ? 'Seleccione un proveedor':'';
-    this.errors.type_invoice = this.purchase.type_invoice.length == 0 ? 'Seleccione un comprobante':'';
-    this.errors.serie = this.purchase.serie.length == 0 ? 'Ingrese una serie':'';
-    this.errors.number = this.purchase.number.length == 0 ? 'Ingrese un numero':'';
-    this.errors.broadcast_date = this.purchase.broadcast_date.length == 0 ? 'Ingrese una fecha':'';
-    this.errors.type_operation = this.purchase.type_operation.length == 0 ? 'Ingrese un tipo de Operación':'';
+    this.errors.id_client = this.sale.id_client.length == 0 ? 'Seleccione un cliente':'';
+    this.errors.type_invoice = this.sale.type_invoice.length == 0 ? 'Seleccione un comprobante':'';
+    this.errors.id_serie = this.sale.id_serie.length == 0 ? 'Seleccione una serie':'';
+    this.errors.number = this.sale.number.length == 0 ? 'Ingrese un numero':'';
+    this.errors.broadcast_date = this.sale.broadcast_date.length == 0 ? 'Ingrese una fecha':'';
+    this.errors.type_operation = this.sale.type_operation.length == 0 ? 'Ingrese un tipo de Operación':'';
 
 
-    if (this.errors.id_provider.length > 0) this.validate = true;
+    if (this.errors.id_client.length > 0) this.validate = true;
     if (this.errors.type_invoice.length > 0) this.validate = true;
-    if (this.errors.serie.length > 0) this.validate = true;
+    if (this.errors.id_serie.length > 0) this.validate = true;
     if (this.errors.number.length > 0) this.validate = true;
     if (this.errors.broadcast_date.length > 0) this.validate = true;
     if (this.errors.type_operation.length > 0) this.validate = true;
@@ -302,7 +348,7 @@ function Validate() {
     }
 
      Swal.fire({
-      title: "Esta seguro de registrar la compra?",
+      title: "Esta seguro de registrar la venta?",
       text: "",
       icon: "warning",
       showCancelButton: true,
@@ -311,7 +357,7 @@ function Validate() {
       confirmButtonText: "Si, Estoy de acuerdo!",
     }).then((result) => {
       if (result.value) {
-        this.AddPurchase();
+        this.AddSale();
       }
     });
 }

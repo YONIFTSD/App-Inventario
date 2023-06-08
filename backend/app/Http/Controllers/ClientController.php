@@ -26,7 +26,7 @@ class ClientController extends Controller
         try{
             $result = Client::ListAll($search);
             return response()->json(['status' => 200,'result' => $result]);
-        } catch (\Exception $e){   
+        } catch (\Exception $e){
             return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
         }
     }
@@ -36,7 +36,16 @@ class ClientController extends Controller
         try{
             $obj = Client::GetById($id_client);
             return response()->json(['status' => 200,'result' => $obj]);
-        } catch (\Exception $e){   
+        } catch (\Exception $e){
+            return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
+        }
+    }
+
+    public function ListActives(){
+        try{
+            $obj = Client::where('state',1)->get(['id_client','name', 'document_number']);
+            return response()->json(['status' => 200,'result' => $obj]);
+        } catch (\Exception $e){
             return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
         }
     }
@@ -52,7 +61,7 @@ class ClientController extends Controller
                 ));
             }
             return $result;
-        } catch (\Exception $e){   
+        } catch (\Exception $e){
             return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
         }
     }
@@ -74,7 +83,7 @@ class ClientController extends Controller
             $obj->save();
 
             return response()->json(['status' => 201,'message'=>'Se ha registrado correctamente el cliente','result' => $obj]);
-        } catch (\Exception $e){   
+        } catch (\Exception $e){
             return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
         }
     }
@@ -97,7 +106,7 @@ class ClientController extends Controller
             $obj->update();
 
             return response()->json(['status' => 200,'message'=>'Se ha modificado correctamente el cliente','result' => $obj]);
-        } catch (\Exception $e){   
+        } catch (\Exception $e){
             return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
         }
     }
@@ -105,12 +114,12 @@ class ClientController extends Controller
 
     public function Delete($id_client){
         try{
-        
+
             $obj = Client::find($id_client);
             $obj->state = 9;
             $obj->update();
             return response()->json(['status' => 200,'message'=>'Se ha eliminado correctamente el client','result' => $obj]);
-        } catch (\Exception $e){   
+        } catch (\Exception $e){
             return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
         }
     }
@@ -121,12 +130,12 @@ class ClientController extends Controller
             set_time_limit(0);
             $income = Utility::GetUtilityBusiness($request->id_business,$request->year,$request->month);
             return response()->json(['status' => 200,'result' => $income]);
-        } catch (\Exception $e){   
+        } catch (\Exception $e){
             return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
         }
     }
 
-    
-    
+
+
     //
 }

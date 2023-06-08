@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Business;
 use App\Models\Correlative;
 use App\Models\ExchangeRateSunat;
+use App\Models\Serie;
 use App\Models\TypeExpense;
 
 class DataManagerController extends Controller
@@ -20,47 +21,22 @@ class DataManagerController extends Controller
     }
 
 
-    public function ListTypeExpenses(){
+    public function GetSeries($type_invoice){
         try{
-            $obj = TypeExpense::where('state',1)->get();
+            $obj = Serie::GetSeries($type_invoice);
             return response()->json(['status' => 200,'result' => $obj]);
-        } catch (\Exception $e){   
+        } catch (\Exception $e){
             return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
         }
     }
 
-    public function ListBusiness(){
+    public function GetSeriesById($id_serie){
         try{
-            $obj = Business::GetBusiness();
+            $obj = Serie::find($id_serie);
             return response()->json(['status' => 200,'result' => $obj]);
-        } catch (\Exception $e){   
+        } catch (\Exception $e){
             return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
         }
     }
 
-    public function GetCorrelativeByModule($module){
-        try{
-            $obj = Correlative::GetByModule($module);
-            return response()->json(['status' => 200,'result' => $obj]);
-        } catch (\Exception $e){   
-            return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
-        }
-    }
-
-    public function GetExchangeRate($date){
-        try{
-            $business = Business::find(1,['bd']);
-            $obj = ExchangeRateSunat::GetByDate($business->bd,$date);
-            return response()->json(['status' => 200,'result' => $obj]);
-        } catch (\Exception $e){   
-            return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
-        }
-    }
-
-    
-
-
-
-    
-    //
 }
