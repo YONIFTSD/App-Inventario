@@ -75,9 +75,9 @@
                                 </td>
                                 <td class="text-center">
                                     <b-dropdown variant="dark" dark right size="sm" text="Acciones">
-                                        <b-dropdown-item v-if="Permission('ClientEdit')" @click="PageEdit(item.id_sale)"><font-awesome-icon title="Editar" icon="fa-solid fa-pen-to-square" /> Editar</b-dropdown-item>
-                                        <b-dropdown-item v-if="Permission('ClientView')" @click="PageView(item.id_sale)"><font-awesome-icon title="Ver" icon="fa-solid fa-eye" /> Ver</b-dropdown-item>
-                                        <b-dropdown-item v-if="Permission('ClientDelete')" @click="ConfirmDelete(item.id_sale)"><font-awesome-icon title="Eliminar" icon="fa-solid fa-trash-can" /> Eliminar</b-dropdown-item>
+                                        <b-dropdown-item v-if="Permission('SaleEdit')" @click="PageEdit(item.id_sale)"><font-awesome-icon title="Editar" icon="fa-solid fa-pen-to-square" /> Editar</b-dropdown-item>
+                                        <b-dropdown-item v-if="Permission('SaleView')" @click="PageView(item.id_sale)"><font-awesome-icon title="Ver" icon="fa-solid fa-eye" /> Ver</b-dropdown-item>
+                                        <b-dropdown-item v-if="Permission('SaleDelete')" @click="ConfirmDelete(item.id_sale)"><font-awesome-icon title="Eliminar" icon="fa-solid fa-trash-can" /> Eliminar</b-dropdown-item>
                                     </b-dropdown>
                                 </td>
                             </tr>

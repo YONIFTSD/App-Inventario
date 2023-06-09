@@ -67,7 +67,7 @@
                                 <td class="text-center">{{item.type_invoice + ' ' + item.serie + '-'+ item.number }}</td>
 
                                 <td class="text-start">{{item.provider_name + ' - '+ item.provider_document_number}}</td>
-                                <td class="text-end">{{item.coin}}</td>
+                                <td class="text-center">{{item.coin}}</td>
                                 <td class="text-end">{{item.total}}</td>
                                 <td class="text-center">
                                     <b-badge v-if="item.state == 1" variant="success">Activo</b-badge>

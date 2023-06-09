@@ -169,7 +169,7 @@ export default {
             {value:'NV',text:'Nota de Venta'},
             {value:'03',text:'Boleta de Venta'},
             {value:'01',text:'Factura'},
-            {value:'ns',text:'Nota de Salida'},
+            {value:'NE',text:'Nota de Entrada'},
         ],
         coin:[
             {value:'PEN',text:'Soles'},
@@ -178,8 +178,8 @@ export default {
         type_operation:[
             {value:'02',text:'Compra Nacional'},
             {value:'03',text:'Bonificación'},
-            {value:'02',text:'Importación'},
-            {value:'02',text:'Ajuste Por Diferencia de Inventario'},
+            {value:'04',text:'Importación'},
+            {value:'05',text:'Ajuste Por Diferencia de Inventario'},
         ],
         providers: [],
         errors:{

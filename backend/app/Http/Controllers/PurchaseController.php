@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataManager;
 use App\Models\KardexMovement;
 use App\Models\Product;
 use App\Models\Purchase;
@@ -25,6 +26,9 @@ class PurchaseController extends Controller
     public function ListAll($from,$to,$search){
         try{
             $result = Purchase::ListAll($from,$to,$search);
+            foreach ($result as $be) {
+                $be->type_invoice = DataManager::TypeInvoice($be->type_invoice);
+            }
             return response()->json(['status' => 200,'result' => $result]);
         } catch (\Exception $e){
             return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);

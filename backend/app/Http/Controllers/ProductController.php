@@ -28,6 +28,15 @@ class ProductController extends Controller
         }
     }
 
+    public function ListActives(){
+        try{
+            $result = Product::where('state',1)->get(['code','name','id_product']);
+            return response()->json(['status' => 200,'result' => $result]);
+        } catch (\Exception $e){
+            return response()->json(['status' => 400,'message' => 'A ocurrido un error', 'result' => $e->getMessage()]);
+        }
+    }
+
     public function Search(Request $request){
         try{
             $result = Product::Search($request->search);

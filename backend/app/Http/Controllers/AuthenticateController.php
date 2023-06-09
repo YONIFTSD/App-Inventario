@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Business;
 use App\Models\PrivilegeZone;
 use App\Models\User;
 use App\Models\ZonePrivilege;
@@ -53,8 +52,8 @@ class AuthenticateController extends Controller
                         array_push($userPermissions,$name_privilege);
                     }
 
-                    $business = Business::GetBusiness();
-                    return response()->json(['status' => 200, 'message' => 'Bienvenido al sistema','result' => ['user' => $user, 'userPermissions' => $userPermissions, 'business' => $business]]);
+
+                    return response()->json(['status' => 200, 'message' => 'Bienvenido al sistema','result' => ['user' => $user, 'userPermissions' => $userPermissions, 'business' => []]]);
                 }
                 return response()->json(['status' => 404, 'message' => 'datos incorrectos']);
 

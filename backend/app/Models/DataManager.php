@@ -7,26 +7,32 @@ use Illuminate\Support\Facades\DB;
 
 class DataManager extends Model
 {
-    
-    public static function NameMonth($code){
+
+    public static function TypeInvoice($code){
         $name = '';
         switch ($code) {
-            case '01': $name = "Ene."; break;
-            case '02': $name = "Feb."; break;
-            case '03': $name = "Mar."; break;
-            case '04': $name = "Abr."; break;
-            case '05': $name = "May."; break;
-            case '06': $name = "Jun."; break;
-            case '07': $name = "Jul."; break;
-            case '08': $name = "Ago."; break;
-            case '09': $name = "Sep."; break;
-            case '10': $name = "Oct."; break;
-            case '11': $name = "Nov."; break;
-            case '12': $name = "Dic."; break;
+            case 'NV': $name = "Nota de Venta"; break;
+            case '03': $name = "Boleta de Venta"; break;
+            case '01': $name = "Factura"; break;
+            case 'NE': $name = "Nota de Entrada"; break;
             default: break;
         }
         return $name;
     }
-   
-  
+
+
+    public static function TypeOperation($code){
+        $name = '';
+        switch ($code) {
+            case '01': $name = "Venta Nacional"; break;
+            case '03': $name = "Bonificación"; break;
+            case '02': $name = "Compra Nacional"; break;
+            case '04': $name = "Importación"; break;
+            case '05': $name = "Ajuste Por Diferencia de Inventario"; break;
+            default: break;
+        }
+        return $name;
+    }
+
+
 }

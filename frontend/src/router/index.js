@@ -309,6 +309,21 @@ const routes = [
   },
 
 
+  {
+    path: '/kardex',
+    redirect: '/kardex/listar',
+    component: DefaultLayout,
+    name: 'Kardex',
+    children: [
+      {
+        path: 'listar',
+        name: 'KardexList',
+        component: () => import('@/views/kardex/List'),
+      },
+    ],
+  },
+
+
 
 
 

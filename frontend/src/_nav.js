@@ -16,7 +16,7 @@ if(user_permissions.indexOf('SaleList') > -1 ){
       component: 'CNavItem',
       name: 'Venta',
       to: '/ventas',
-      icon: 'cil-speedometer',
+      icon: 'cil-dollar',
   })
 
 }
@@ -35,7 +35,7 @@ if(user_permissions.indexOf('ClientList') > -1 || user_permissions.indexOf('Prov
       component: 'CNavGroup',
       name: 'Entidad',
       to: '/clientes',
-      icon: 'cil-star',
+      icon: 'cil-people',
       items: item,
     }
   )
@@ -69,9 +69,17 @@ if(user_permissions.indexOf('PurchaseList') > -1 ){
       component: 'CNavItem',
       name: 'Compras',
       to: '/compras',
-      icon: 'cil-speedometer',
+      icon: 'cil-file',
   })
+}
 
+if(user_permissions.indexOf('KardexList') > -1 ){
+  menu.push({
+      component: 'CNavItem',
+      name: 'kardex',
+      to: '/kardex',
+      icon: 'cil-grid',
+  })
 }
 
 
@@ -89,7 +97,7 @@ if(user_permissions.indexOf('UserList') > -1 || user_permissions.indexOf('UserTy
       component: 'CNavGroup',
       name: 'Mantenimiento',
       to: '/usuario',
-      icon: 'cil-star',
+      icon: 'cil-user',
       items: item,
     }
   )

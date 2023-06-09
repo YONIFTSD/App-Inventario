@@ -89,6 +89,8 @@ $router->group(['middleware' => 'role'], function () use ($router) {
         $router->get('/view/{id_product}', 'ProductController@View');
 
         $router->post('/search', 'ProductController@Search');
+
+        $router->get('/list-actives', 'ProductController@ListActives');
     });
 
      //compras
@@ -117,19 +119,8 @@ $router->group(['middleware' => 'role'], function () use ($router) {
         $router->get('/get-series-by-id/{id_serie}', 'DataManagerController@GetSeriesById');
     });
 
-
-
-    //report
-    $router->group(['prefix' => 'report'], function () use ($router) {
-        $router->post('/utility-daily-settlement', 'ReportController@UtilityDailySettlement');
-        $router->post('/utility-management', 'ReportController@UtilityManagement');
-        $router->post('/utility-account-receivable', 'ReportController@UtilityAccountReceivable');
-        $router->post('/utility', 'ReportController@Utility');
-
-        $router->post('/month-utility-daily-settlement', 'ReportController@MonthUtilityDailySettlement');
-        $router->post('/month-utility-management', 'ReportController@MonthUtilityManagement');
-        $router->post('/month-utility-account-receivable', 'ReportController@MonthUtilityAccountReceivable');
-        $router->post('/month-utility', 'ReportController@MonthUtility');
+     //data
+     $router->group(['prefix' => 'kardex'], function () use ($router) {
+        $router->get('/get-movement-by-product/{id_product}/{to}', 'KardexController@GetMovementByProduct');
     });
-
 });
