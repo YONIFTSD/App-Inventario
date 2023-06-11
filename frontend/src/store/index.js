@@ -3,7 +3,7 @@ const axios = require('axios').default
 
 export default createStore({
   state: {
-    url_base: 'http://localhost:8000/',
+    url_base: 'https://app-inventario.yonathansoft.com/api/',
     sidebarVisible: true,
     sidebarUnfoldable: true,
 
