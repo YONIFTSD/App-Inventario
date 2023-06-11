@@ -14,11 +14,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
--- Volcando estructura de base de datos para bd_app_inventario
-CREATE DATABASE IF NOT EXISTS `bd_app_inventario` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `bd_app_inventario`;
-
 -- Volcando estructura para tabla bd_app_inventario.business
 CREATE TABLE IF NOT EXISTS `business` (
   `id_business` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -33,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `business` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Volcando datos para la tabla bd_app_inventario.business: ~2 rows (aproximadamente)
+DELETE FROM `business`;
 INSERT INTO `business` (`id_business`, `document_type`, `document_number`, `name`, `bd`, `state`, `created_at`, `updated_at`) VALUES
 	(1, '6', '20601249431', 'OPERADORES DUTY FREE SAC', 'operadores', 1, '2021-06-22 23:00:38', '2021-09-12 15:53:21'),
 	(2, '6', '20601249511', 'INVERSIONES DPG SAC', 'inversiones', 1, '2021-08-18 19:42:47', '2021-08-17 19:42:47');
@@ -48,8 +44,9 @@ CREATE TABLE IF NOT EXISTS `categories` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- Volcando datos para la tabla bd_app_inventario.categories: ~1 rows (aproximadamente)
+DELETE FROM `categories`;
 INSERT INTO `categories` (`id_category`, `name`, `state`, `created_at`, `updated_at`) VALUES
-	(1, 'test', 1, '2023-06-07 01:35:21', '2023-06-07 01:35:21');
+	(1, 'general', 1, '2023-06-07 01:35:21', '2023-06-11 15:37:03');
 
 -- Volcando estructura para tabla bd_app_inventario.clients
 CREATE TABLE IF NOT EXISTS `clients` (
@@ -66,6 +63,7 @@ CREATE TABLE IF NOT EXISTS `clients` (
 ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Volcando datos para la tabla bd_app_inventario.clients: ~24 rows (aproximadamente)
+DELETE FROM `clients`;
 INSERT INTO `clients` (`id_client`, `document_type`, `document_number`, `name`, `email`, `phone`, `state`, `created_at`, `updated_at`) VALUES
 	(1, '1', '00000000', 'CLEINTES VARIOS', '', '', 1, '2022-08-24 01:35:46', '2022-08-24 01:35:46'),
 	(2, '1', '', 'HILDA CONDORI', '', '', 1, '2022-08-25 21:22:10', '2022-08-25 21:22:10'),
@@ -105,6 +103,7 @@ CREATE TABLE IF NOT EXISTS `correlatives` (
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Volcando datos para la tabla bd_app_inventario.correlatives: ~8 rows (aproximadamente)
+DELETE FROM `correlatives`;
 INSERT INTO `correlatives` (`id_correlative`, `module`, `number`, `num`, `state`, `created_at`, `updated_at`) VALUES
 	(6, 'ManagementExpense', '00001829', 1829, 1, '2022-07-26 05:23:40', '2023-06-01 13:59:57'),
 	(7, 'ManagementIncome', '00001027', 1027, 1, '2022-07-26 05:23:40', '2023-06-03 15:29:59'),
@@ -136,9 +135,10 @@ CREATE TABLE IF NOT EXISTS `kardex_movement` (
   PRIMARY KEY (`id_kardex`),
   KEY `id_product` (`id_product`),
   KEY `id_module` (`id_module`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_app_inventario.kardex_movement: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla bd_app_inventario.kardex_movement: ~7 rows (aproximadamente)
+DELETE FROM `kardex_movement`;
 INSERT INTO `kardex_movement` (`id_kardex`, `module`, `id_module`, `id_product`, `broadcast_date`, `type_operation`, `type_invoice`, `serie`, `number`, `quantity`, `unit_price`, `total_price`, `movement_type`, `state`, `created_at`, `updated_at`) VALUES
 	(1, 'Purchase', 1, 3, '2023-06-08', '02', '01', 'f002', '22', 100.00, 10.00, 1000.00, 'Input', 1, '2023-06-08 23:39:57', '2023-06-08 23:39:57'),
 	(7, 'Purchase', 3, 3, '2023-06-08', '02', '01', 'f001', '32423', 20.00, 10.00, 200.00, 'Input', 1, '2023-06-09 00:02:37', '2023-06-09 00:02:37'),
@@ -146,7 +146,10 @@ INSERT INTO `kardex_movement` (`id_kardex`, `module`, `id_module`, `id_product`,
 	(11, 'Sale', 2, 3, '2023-06-08', '01', '03', 'B001', '00000004', 20.00, 10.00, 200.00, 'Output', 1, '2023-06-09 00:04:13', '2023-06-09 00:04:13'),
 	(12, 'Purchase', 4, 3, '2023-06-06', '02', '01', 'f003', '232432', 10.00, 0.00, 0.00, 'Input', 1, '2023-06-09 01:07:47', '2023-06-09 01:07:47'),
 	(13, 'Purchase', 4, 2, '2023-06-06', '02', '01', 'f003', '232432', 10.00, 0.00, 0.00, 'Input', 1, '2023-06-09 01:07:47', '2023-06-09 01:07:47'),
-	(14, 'Sale', 3, 2, '2023-06-08', '01', '03', 'B001', '00000005', 5.00, 10.00, 50.00, 'Output', 1, '2023-06-09 01:08:15', '2023-06-09 01:08:15');
+	(14, 'Sale', 3, 2, '2023-06-08', '01', '03', 'B001', '00000005', 5.00, 10.00, 50.00, 'Output', 1, '2023-06-09 01:08:15', '2023-06-09 01:08:15'),
+	(17, 'Purchase', 5, 2, '2023-06-09', '02', '01', 'f004', '34454', 20.00, 10.00, 200.00, 'Input', 1, '2023-06-11 15:39:31', '2023-06-11 15:39:31'),
+	(18, 'Purchase', 5, 3, '2023-06-09', '02', '01', 'f004', '34454', 20.00, 10.00, 200.00, 'Input', 1, '2023-06-11 15:39:31', '2023-06-11 15:39:31'),
+	(19, 'Sale', 4, 3, '2023-06-11', '01', '01', 'F001', '00000001', 10.00, 10.00, 100.00, 'Output', 1, '2023-06-11 15:41:38', '2023-06-11 15:41:38');
 
 -- Volcando estructura para tabla bd_app_inventario.migrations
 CREATE TABLE IF NOT EXISTS `migrations` (
@@ -157,6 +160,7 @@ CREATE TABLE IF NOT EXISTS `migrations` (
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Volcando datos para la tabla bd_app_inventario.migrations: ~10 rows (aproximadamente)
+DELETE FROM `migrations`;
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(3, '2022_07_26_012913_create_management_incomes_table', 1),
 	(4, '2022_07_26_013332_create_management_monthly_expenses_table', 2),
@@ -181,6 +185,7 @@ CREATE TABLE IF NOT EXISTS `privileges` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Volcando datos para la tabla bd_app_inventario.privileges: ~5 rows (aproximadamente)
+DELETE FROM `privileges`;
 INSERT INTO `privileges` (`id_privilege`, `name`, `role`, `state`, `created_at`, `updated_at`) VALUES
 	(1, 'Listar', 'List', 1, '2022-08-18 12:49:31', '2022-08-18 12:49:31'),
 	(2, 'Agregar', 'Add', 1, '2022-08-18 12:49:41', '2022-08-18 12:49:42'),
@@ -206,7 +211,8 @@ CREATE TABLE IF NOT EXISTS `privileges_zones` (
   CONSTRAINT `privileges_zones_id_zone_foreign` FOREIGN KEY (`id_zone`) REFERENCES `zones` (`id_zone`)
 ) ENGINE=InnoDB AUTO_INCREMENT=708 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla bd_app_inventario.privileges_zones: ~239 rows (aproximadamente)
+-- Volcando datos para la tabla bd_app_inventario.privileges_zones: ~192 rows (aproximadamente)
+DELETE FROM `privileges_zones`;
 INSERT INTO `privileges_zones` (`id_privilege_zone`, `id_user_type`, `id_zone`, `id_privilege`, `state`, `created_at`, `updated_at`) VALUES
 	(406, 2, 4, 1, 1, '2022-09-08 21:14:16', '2022-09-08 21:14:16'),
 	(407, 2, 4, 5, 1, '2022-09-08 21:14:16', '2022-09-08 21:14:16'),
@@ -422,9 +428,10 @@ CREATE TABLE IF NOT EXISTS `products` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 -- Volcando datos para la tabla bd_app_inventario.products: ~2 rows (aproximadamente)
+DELETE FROM `products`;
 INSERT INTO `products` (`id_product`, `id_category`, `code`, `name`, `barcode`, `igv`, `unit_measure`, `stock`, `purchase_price`, `sale_price`, `state`, `created_at`, `updated_at`) VALUES
-	(2, 1, 'qe', 'leche', '234234', '10', '1', 55.00, 20.00, 23.00, 1, '2023-06-07 02:18:01', '2023-06-09 01:08:15'),
-	(3, 1, '45345', 'arroz', 'sdfsdf', '10', '2', 110.00, 10.00, 12.00, 1, '2023-06-07 02:24:46', '2023-06-09 01:07:47');
+	(2, 1, 'qe', 'leche', '234234', '10', '1', 75.00, 20.00, 23.00, 1, '2023-06-07 02:18:01', '2023-06-11 15:39:31'),
+	(3, 1, '45345', 'Mouse', 'sdfsdf', '10', '2', 120.00, 10.00, 12.00, 1, '2023-06-07 02:24:46', '2023-06-11 15:44:34');
 
 -- Volcando estructura para tabla bd_app_inventario.providers
 CREATE TABLE IF NOT EXISTS `providers` (
@@ -441,6 +448,7 @@ CREATE TABLE IF NOT EXISTS `providers` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Volcando datos para la tabla bd_app_inventario.providers: ~2 rows (aproximadamente)
+DELETE FROM `providers`;
 INSERT INTO `providers` (`id_provider`, `document_type`, `document_number`, `name`, `email`, `phone`, `state`, `created_at`, `updated_at`) VALUES
 	(1, '1', '45353453', 'test', '', '', 9, '2023-06-03 22:20:43', '2023-06-03 22:25:20'),
 	(2, '1', '45454545', 'test', '', '', 1, '2023-06-03 22:25:29', '2023-06-03 22:25:29');
@@ -466,14 +474,16 @@ CREATE TABLE IF NOT EXISTS `purchases` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_purchase`),
   KEY `id_provider` (`id_provider`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_app_inventario.purchases: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla bd_app_inventario.purchases: ~4 rows (aproximadamente)
+DELETE FROM `purchases`;
 INSERT INTO `purchases` (`id_purchase`, `id_provider`, `type_invoice`, `serie`, `number`, `broadcast_date`, `coin`, `type_operation`, `observation`, `taxed_operation`, `exonerated_operation`, `unaffected_operation`, `igv`, `total`, `state`, `created_at`, `updated_at`) VALUES
 	(1, 2, '01', 'f002', '22', '2023-06-08', 'PEN', '02', '', 847.46, 0.00, 0.00, 152.54, 1000.00, 1, '2023-06-08 23:39:57', '2023-06-08 23:39:57'),
 	(2, 2, '01', 'f005', '33', '2023-06-08', 'PEN', '02', '', 169.49, 0.00, 0.00, 30.51, 200.00, 9, '2023-06-08 23:40:23', '2023-06-09 00:02:04'),
 	(3, 2, '01', 'f001', '32423', '2023-06-08', 'PEN', '02', '', 593.22, 0.00, 0.00, 106.78, 700.00, 1, '2023-06-09 00:02:37', '2023-06-09 00:02:37'),
-	(4, 2, '01', 'f003', '232432', '2023-06-06', 'PEN', '02', '', 0.00, 0.00, 0.00, 0.00, 0.00, 1, '2023-06-09 01:07:47', '2023-06-09 01:07:47');
+	(4, 2, '01', 'f003', '232432', '2023-06-06', 'PEN', '02', '', 0.00, 0.00, 0.00, 0.00, 0.00, 1, '2023-06-09 01:07:47', '2023-06-09 01:07:47'),
+	(5, 2, '01', 'f004', '34454', '2023-06-09', 'PEN', '02', 'ss', 338.98, 0.00, 0.00, 61.02, 400.00, 1, '2023-06-11 15:39:05', '2023-06-11 15:39:31');
 
 -- Volcando estructura para tabla bd_app_inventario.purchases_detail
 CREATE TABLE IF NOT EXISTS `purchases_detail` (
@@ -491,16 +501,19 @@ CREATE TABLE IF NOT EXISTS `purchases_detail` (
   KEY `id_product` (`id_product`),
   CONSTRAINT `FK__purchases` FOREIGN KEY (`id_purchase`) REFERENCES `purchases` (`id_purchase`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_purchases_detail_products` FOREIGN KEY (`id_product`) REFERENCES `products` (`id_product`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_app_inventario.purchases_detail: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla bd_app_inventario.purchases_detail: ~6 rows (aproximadamente)
+DELETE FROM `purchases_detail`;
 INSERT INTO `purchases_detail` (`id_purchase_detail`, `id_purchase`, `id_product`, `quantity`, `unit_price`, `total_price`, `state`, `created_at`, `updated_at`) VALUES
 	(1, 1, 3, 100.00, 10.00, 1000.00, 1, '2023-06-08 23:39:57', '2023-06-08 23:39:57'),
 	(6, 2, 3, 20.00, 10.00, 200.00, 1, '2023-06-09 00:01:32', '2023-06-09 00:01:32'),
 	(7, 3, 3, 20.00, 10.00, 200.00, 1, '2023-06-09 00:02:37', '2023-06-09 00:02:37'),
 	(8, 3, 2, 50.00, 10.00, 500.00, 1, '2023-06-09 00:02:37', '2023-06-09 00:02:37'),
 	(9, 4, 3, 10.00, 0.00, 0.00, 1, '2023-06-09 01:07:47', '2023-06-09 01:07:47'),
-	(10, 4, 2, 10.00, 0.00, 0.00, 1, '2023-06-09 01:07:47', '2023-06-09 01:07:47');
+	(10, 4, 2, 10.00, 0.00, 0.00, 1, '2023-06-09 01:07:47', '2023-06-09 01:07:47'),
+	(13, 5, 2, 20.00, 10.00, 200.00, 1, '2023-06-11 15:39:31', '2023-06-11 15:39:31'),
+	(14, 5, 3, 20.00, 10.00, 200.00, 1, '2023-06-11 15:39:31', '2023-06-11 15:39:31');
 
 -- Volcando estructura para tabla bd_app_inventario.sales
 CREATE TABLE IF NOT EXISTS `sales` (
@@ -527,13 +540,15 @@ CREATE TABLE IF NOT EXISTS `sales` (
   KEY `id_client` (`id_client`),
   KEY `id_user` (`id_user`),
   KEY `id_serie` (`id_serie`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_app_inventario.sales: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla bd_app_inventario.sales: ~3 rows (aproximadamente)
+DELETE FROM `sales`;
 INSERT INTO `sales` (`id_sale`, `id_client`, `id_user`, `id_serie`, `type_invoice`, `serie`, `number`, `broadcast_date`, `coin`, `type_operation`, `observation`, `taxed_operation`, `exonerated_operation`, `unaffected_operation`, `igv`, `total`, `state`, `created_at`, `updated_at`) VALUES
 	(1, 3, 8, 2, '03', 'B001', '00000003', '2023-06-08', 'PEN', '01', '', 169.49, 0.00, 0.00, 30.51, 200.00, 9, '2023-06-09 00:03:10', '2023-06-09 00:03:51'),
 	(2, 2, 8, 2, '03', 'B001', '00000004', '2023-06-08', 'PEN', '01', '', 169.49, 0.00, 0.00, 30.51, 200.00, 1, '2023-06-09 00:04:13', '2023-06-09 00:04:13'),
-	(3, 2, 8, 2, '03', 'B001', '00000005', '2023-06-08', 'PEN', '01', '', 42.37, 0.00, 0.00, 7.63, 50.00, 1, '2023-06-09 01:08:15', '2023-06-09 01:08:15');
+	(3, 2, 8, 2, '03', 'B001', '00000005', '2023-06-08', 'PEN', '01', '', 42.37, 0.00, 0.00, 7.63, 50.00, 1, '2023-06-09 01:08:15', '2023-06-09 01:08:15'),
+	(4, 10, 8, 3, '01', 'F001', '00000001', '2023-06-11', 'PEN', '01', 'test', 84.75, 0.00, 0.00, 15.25, 100.00, 1, '2023-06-11 15:41:38', '2023-06-11 15:41:38');
 
 -- Volcando estructura para tabla bd_app_inventario.sales_detail
 CREATE TABLE IF NOT EXISTS `sales_detail` (
@@ -549,13 +564,15 @@ CREATE TABLE IF NOT EXISTS `sales_detail` (
   PRIMARY KEY (`id_sale_detail`),
   KEY `id_sale` (`id_sale`),
   KEY `id_product` (`id_product`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla bd_app_inventario.sales_detail: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla bd_app_inventario.sales_detail: ~3 rows (aproximadamente)
+DELETE FROM `sales_detail`;
 INSERT INTO `sales_detail` (`id_sale_detail`, `id_sale`, `id_product`, `quantity`, `unit_price`, `total_price`, `state`, `created_at`, `updated_at`) VALUES
 	(2, 1, 3, 20.00, 10.00, 200.00, 1, '2023-06-09 00:03:33', '2023-06-09 00:03:33'),
 	(3, 2, 3, 20.00, 10.00, 200.00, 1, '2023-06-09 00:04:13', '2023-06-09 00:04:13'),
-	(4, 3, 2, 5.00, 10.00, 50.00, 1, '2023-06-09 01:08:15', '2023-06-09 01:08:15');
+	(4, 3, 2, 5.00, 10.00, 50.00, 1, '2023-06-09 01:08:15', '2023-06-09 01:08:15'),
+	(5, 4, 3, 10.00, 10.00, 100.00, 1, '2023-06-11 15:41:38', '2023-06-11 15:41:38');
 
 -- Volcando estructura para tabla bd_app_inventario.series
 CREATE TABLE IF NOT EXISTS `series` (
@@ -571,10 +588,11 @@ CREATE TABLE IF NOT EXISTS `series` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla bd_app_inventario.series: ~3 rows (aproximadamente)
+DELETE FROM `series`;
 INSERT INTO `series` (`id_serie`, `type_invoice`, `serie`, `number`, `num`, `state`, `created_at`, `updated_at`) VALUES
 	(1, 'NV', '0001', '00000001', 1, 1, '2023-06-08 04:14:21', '2023-06-08 04:14:22'),
 	(2, '03', 'B001', '00000006', 6, 1, '2023-06-08 04:14:21', '2023-06-09 01:08:15'),
-	(3, '01', 'F001', '00000001', 1, 1, '2023-06-08 04:14:21', '2023-06-08 04:14:22');
+	(3, '01', 'F001', '00000002', 2, 1, '2023-06-08 04:14:21', '2023-06-11 15:41:38');
 
 -- Volcando estructura para tabla bd_app_inventario.users
 CREATE TABLE IF NOT EXISTS `users` (
@@ -597,11 +615,13 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `users_api_token_unique` (`api_token`),
   KEY `id_user_type` (`id_user_type`),
   CONSTRAINT `FK_users_user_type` FOREIGN KEY (`id_user_type`) REFERENCES `user_type` (`id_user_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla bd_app_inventario.users: ~12 rows (aproximadamente)
+-- Volcando datos para la tabla bd_app_inventario.users: ~1 rows (aproximadamente)
+DELETE FROM `users`;
 INSERT INTO `users` (`id_user`, `id_user_type`, `establishment`, `name`, `last_name`, `user`, `email`, `password`, `phone`, `state`, `api_token`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(8, 1, '[]', 'admin', '', 'admin', 'admin@gmail.com', '$2y$10$KiBQiYHBP5C9AB5qTkW/2O6.8PrxkvRoqWxuNjo3v9Ex2SGuJUPL2', '', 1, 'Cnf0pqRx7rZbWty1DvyC7dyYHpx2i4DjH3sqoZ7GzDC1L1hBK8IpOgSbBfGK', NULL, '2021-08-19 21:17:22', '2023-06-09 01:46:12');
+	(8, 1, '[]', 'admin', '', 'admin', 'admin@gmail.com', '$2y$10$KiBQiYHBP5C9AB5qTkW/2O6.8PrxkvRoqWxuNjo3v9Ex2SGuJUPL2', '', 1, '7zzWeZ0kgnCbFOyH0byqsWwnwFfhzfptnbkwSmdnDCTpzwgXGe6q5NbJoaC6', NULL, '2021-08-19 21:17:22', '2023-06-11 16:06:28'),
+	(9, 2, NULL, 'Juan Perez', '', 'Jperez', 'juan@gmail.com', '$2y$10$GyM3l0hIJ1xr.sT1kU9d9u7ViK3QjrygnLdA88Q3kK5JhrE3Gp0HW', '', 9, 'QqCSBxVYorg60R9xY2Qvd6slXt37spX1L1NpOgkl2t0eDe3JaF2aeloAaKuK', NULL, '2023-06-11 15:31:29', '2023-06-11 15:36:10');
 
 -- Volcando estructura para tabla bd_app_inventario.user_type
 CREATE TABLE IF NOT EXISTS `user_type` (
@@ -611,9 +631,10 @@ CREATE TABLE IF NOT EXISTS `user_type` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_user_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla bd_app_inventario.user_type: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla bd_app_inventario.user_type: ~2 rows (aproximadamente)
+DELETE FROM `user_type`;
 INSERT INTO `user_type` (`id_user_type`, `name`, `state`, `created_at`, `updated_at`) VALUES
 	(1, 'Administrador', 1, '2022-08-23 07:52:19', '2022-08-23 10:51:38'),
 	(2, 'Caja', 1, '2022-08-23 08:44:50', '2022-09-08 21:14:16');
@@ -628,9 +649,10 @@ CREATE TABLE IF NOT EXISTS `zones` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_zone`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Volcando datos para la tabla bd_app_inventario.zones: ~22 rows (aproximadamente)
+-- Volcando datos para la tabla bd_app_inventario.zones: ~10 rows (aproximadamente)
+DELETE FROM `zones`;
 INSERT INTO `zones` (`id_zone`, `name`, `module`, `group`, `state`, `created_at`, `updated_at`) VALUES
 	(1, 'Inicio', 'Home', 'Inicio', 1, '2022-08-18 12:51:23', '2022-08-18 12:51:24'),
 	(10, 'Usuario', 'User', 'Mantenimiento', 1, '2022-08-18 13:10:54', '2022-08-18 13:10:54'),
